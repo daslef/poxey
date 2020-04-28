@@ -4,8 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poxey</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='signin.css') }}">
 </head>
 <body>
-    <h1>Test Sigin Page</h1>
+    <header class="header">
+        <h1>Poxey</h1>
+        <p>Воплоти свои мечты в реальность!</p>
+    </header>
+    <div class="form-container">
+        <div class="container">
+            <form id="form" class="form">
+                <h2>Вперед к приключениям!</h2>
+                <div class="form-control">
+                    <label for="username">Имя пользователя</label>
+                    <input type="text" id="username" placeholder="Введите логин">
+                    <small>Error message</small>
+                </div>
+                <div class="form-control">
+                    <label for="password">Пароль</label>
+                    <input type="password" id="password" placeholder="Введите пароль">
+                    <small>Error message</small>
+                </div>
+                <button type="submit">Войти</button>
+            </form>
+        </div>
+    </div>
+    <footer class="footer">
+        &copy; 2020 Poxey Team. All rights reserved.
+    </footer>
+    
+    <script>
+        const form = document.getElementById('form');
+        const username = document.getElementById('username');
+        const password = document.getElementById('password');
+
+        function showError(input, msg) {
+            const formControl = input.parentElement;
+            const small = formControl.querySelector('small');
+            formControl.className = 'form-control error';
+            small.innerText = msg;
+        }
+
+        function showSuccess(input) {
+            const formControl = input.parentElement;
+            formControl.className = 'form-control success';
+        }
+
+        function checkRequired(inputArr) {
+            inputArr.forEach(function(input) {
+                if (input.value.trim() === "") {
+                    showError(input, `Данное поле обязательно`);
+                }
+                else {
+                    showSuccess(input);
+                }
+            });
+        }
+
+        function checkLength(input, min, max) {
+            if (input.value.length < min) {
+                showError(input, `Поле должно состоять хотя бы из ${min} символов`);
+            }
+            else if (input.value.length > max) {
+                showError(input, `Поле должно состоять из меньше ${max} символов`);
+            }
+            else {
+                showSuccess(input);
+            }
+        }
+
+        function getFieldName(input) {
+            return input.id.charAt(0).toUpperCase() + input.id.slice(1); 
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            checkRequired([username, password]);
+            checkLength(username, 4, 15);
+            checkLength(password, 6, 25);
+        });
+    </script>
 </body>
 </html>
