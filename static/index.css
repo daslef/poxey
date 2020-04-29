@@ -91,12 +91,15 @@ body {
     justify-content: center;
     align-items: center;
     transition: .5s;
+    color: black;
+    text-decoration: none;
 }
 
 .signin {
     background-color: rgb(255, 116, 36);
     box-shadow: 0 0 10px rgb(255, 101, 12);
     border-radius: 40px;
+    
 }
 
 .signin:hover {
@@ -107,6 +110,7 @@ body {
     background-color: rgb(255, 201, 24);
     box-shadow: 0 0 10px rgb(255, 198, 13);
     border-radius: 40px;
+    
 }
 
 .signup:hover {

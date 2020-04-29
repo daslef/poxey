@@ -14,16 +14,16 @@
     </header>
     <div class="form-container">
         <div class="container">
-            <form id="form" class="form">
+            <form id="form" class="form" action="#" method="POST">
                 <h2>Вперед к приключениям!</h2>
                 <div class="form-control">
                     <label for="username">Имя пользователя</label>
-                    <input type="text" id="username" placeholder="Введите логин">
+                    <input type="text" name=username id="username" placeholder="Введите логин">
                     <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="password">Пароль</label>
-                    <input type="password" id="password" placeholder="Введите пароль">
+                    <input type="password" name=password id="password" placeholder="Введите пароль">
                     <small>Error message</small>
                 </div>
                 <button type="submit">Войти</button>
@@ -79,7 +79,6 @@
         }
 
         form.addEventListener('submit', function(e) {
-            e.preventDefault();
             
             checkRequired([username, password]);
             checkLength(username, 4, 15);

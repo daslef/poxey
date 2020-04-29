@@ -40,13 +40,31 @@ def signup():
         if found_user:
             print(found_user)
         else:
-            usr = User(username, email, password)
-            db.session.add(usr)
+            user = User(username, email, password)
+            db.session.add(user)
             db.session.commit()
         return redirect(url_for("index"))
         
     return render_template("signup.html")
     
+@app.route('/signin', methods=['GET', 'POST'])
+def signin():
+    if request.method == "POST":
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(name=username).first()
+        if user and user.password == password:
+            return redirect(url_for('profile', name=user.name))
+    return render_template("signin.html")
+
+
+@app.route('/profile/<name>', methods=['GET', 'POST'])
+def profile(name):
+    return render_template("profile.html")
+
+@app.route('/adventure', methods=['GET', 'POST'])
+def adventure():
+    return render_template("adventure.html")
 
 if __name__ == "__main__":
     db.create_all()
