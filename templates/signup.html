@@ -14,26 +14,26 @@
     </header>
     <div class="form-container">
         <div class="container">
-            <form id="form" class="form">
+            <form method="POST" id="form" class="form" action="#">
                 <h2>Скорее регистрируйся!</h2>
                 <div class="form-control">
                     <label for="username">Имя пользователя</label>
-                    <input type="text" id="username" placeholder="Введите логин">
+                    <input type="text" id="username" name="username" placeholder="Введите логин">
                     <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="email">E-Mail</label>
-                    <input type="text" id="email" placeholder="Введите вашу почту">
+                    <input type="text" id="email" name="email" placeholder="Введите вашу почту">
                     <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="password">Пароль</label>
-                    <input type="password" id="password" placeholder="Введите пароль">
+                    <input type="password" id="password" name="password" placeholder="Введите пароль">
                     <small>Error message</small>
                 </div>
                 <div class="form-control">
                     <label for="password2">Подтвердите пароль</label>
-                    <input type="password" id="password2" placeholder="Повторите пароль">
+                    <input type="password" id="password2" name="password2" placeholder="Повторите пароль">
                     <small>Error message</small>
                 </div>
                 <button type="submit">Зарегистрироваться</button>
@@ -108,7 +108,6 @@
         }
 
         form.addEventListener('submit', function(e) {
-            e.preventDefault();
             
             checkRequired([username, email, password, password2]);
             checkLength(username, 4, 15);
