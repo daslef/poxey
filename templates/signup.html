@@ -14,7 +14,7 @@
     </header>
     <div class="form-container">
         <div class="container">
-            <form method="POST" id="form" class="form" action="#">
+            <form method="POST" id="form" class="form">
                 <h2>Скорее регистрируйся!</h2>
                 <div class="form-control">
                     <label for="username">Имя пользователя</label>
@@ -68,38 +68,50 @@
             
             if (re.test(input.value.trim())) {
                 showSuccess(input);
+                return true;
             }
             else {
                 showError(input, "E-Mail некорректный");
+                return false;
             }
         }
 
         function checkRequired(inputArr) {
+            let isValid = true;
             inputArr.forEach(function(input) {
                 if (input.value.trim() === "") {
                     showError(input, `Данное поле обязательно`);
+                    isValid = false;
                 }
                 else {
                     showSuccess(input);
                 }
             });
+            return isValid;
         }
 
         function checkLength(input, min, max) {
             if (input.value.length < min) {
                 showError(input, `Поле должно состоять хотя бы из ${min} символов`);
+                return false;
             }
             else if (input.value.length > max) {
                 showError(input, `Поле должно состоять из меньше ${max} символов`);
+                return false;
             }
             else {
                 showSuccess(input);
+                return true;
             }
         }
 
         function checkPasswordsMatch(input1, input2) {
             if (input1.value !== input2.value) {
                 showError(input2, "Пароли не совпадают");
+                return false;
+            }
+            else {
+                return true;
             }
         }
 
@@ -109,11 +121,18 @@
 
         form.addEventListener('submit', function(e) {
             
-            checkRequired([username, email, password, password2]);
-            checkLength(username, 4, 15);
-            checkLength(password, 6, 25);
-            checkEmail(email);
-            checkPasswordsMatch(password, password2);
+            let isValidRequired = checkRequired([username, email, password, password2]);
+            let isValidNameLength = checkLength(username, 4, 15);
+            let isValidPasswordLength = checkLength(password, 6, 25);
+            let isValidEmail = checkEmail(email);
+            let isPasswordMatches = checkPasswordsMatch(password, password2);
+            
+            if(isValidRequired && isValidNameLength && isValidPasswordLength && isValidEmail && isPasswordMatches) {
+                form.submit();
+            }
+            else {
+                e.preventDefault();
+            }
         });
     </script>
 </body>

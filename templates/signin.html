@@ -14,7 +14,7 @@
     </header>
     <div class="form-container">
         <div class="container">
-            <form id="form" class="form" action="#" method="POST">
+            <form id="form" class="form" method="POST">
                 <h2>Вперед к приключениям!</h2>
                 <div class="form-control">
                     <label for="username">Имя пользователя</label>
@@ -51,26 +51,32 @@
             formControl.className = 'form-control success';
         }
 
-        function checkRequired(inputArr) {
-            inputArr.forEach(function(input) {
+        function checkRequired(inputArray) {
+            let isValid = true;
+            inputArray.forEach(input => {
                 if (input.value.trim() === "") {
                     showError(input, `Данное поле обязательно`);
+                    isValid = false;
                 }
                 else {
                     showSuccess(input);
-                }
+                } 
             });
+            return isValid;
         }
 
         function checkLength(input, min, max) {
             if (input.value.length < min) {
                 showError(input, `Поле должно состоять хотя бы из ${min} символов`);
+                return false;
             }
             else if (input.value.length > max) {
                 showError(input, `Поле должно состоять из меньше ${max} символов`);
+                return false;
             }
             else {
                 showSuccess(input);
+                return true;
             }
         }
 
@@ -79,10 +85,16 @@
         }
 
         form.addEventListener('submit', function(e) {
+            let isValid = checkRequired([username, password]);
+            let isValidNameLength = checkLength(username, 4, 15);
+            let isValidPasswordLength = checkLength(password, 6, 25);
             
-            checkRequired([username, password]);
-            checkLength(username, 4, 15);
-            checkLength(password, 6, 25);
+            if(isValid && isValidNameLength && isValidPasswordLength) {
+                form.submit();
+            }
+            else {
+                e.preventDefault();
+            }
         });
     </script>
 </body>
