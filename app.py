@@ -43,7 +43,7 @@ def signup():
             user = User(username, email, password)
             db.session.add(user)
             db.session.commit()
-        return redirect(url_for("index"))
+        return redirect(url_for("search"))
         
     return render_template("signup.html")
     

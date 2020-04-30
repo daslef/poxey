@@ -89,7 +89,7 @@ body {
     height: 320px;
     width: 300px;
     background: red;
-    background: url('./assets/logo.png') no-repeat;
+    background: url('../../assets/logo.png') no-repeat;
     background-size: 100%;
 }
 
@@ -101,7 +101,7 @@ body {
     height: 300px;
     width: 250px;
     background: red;
-    background: url('./assets/logo2.png') no-repeat;
+    background: url('../../assets/logo2.png') no-repeat;
     background-size: 100%;
 }
 
