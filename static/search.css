@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: rgb(255,192,0);
+    background: linear-gradient(90deg, rgba(255,192,0,1) 0%, rgba(255,173,57,1) 49%, rgba(255,142,18,1) 100%);
+}
+
+.important-text {
+    color: rgb(255, 81, 0) !important;
+    font-weight: 700;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 80px;
+    height: 80px;
+}
+
+.header-logo h1 {
+    font-size: 40px;
+    letter-spacing: 20px;
+    margin-left: 40px;
+}
+
+.header-nav {
+    display: flex;
+    align-items: center;
+}
+
+.header-nav-list {
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+}
+
+.header-nav-list li > a {
+    text-decoration: none;
+    color: #000;
+    margin-left: 60px;
+    font-size: 20px;
+    transition: all .2s ease;
+    letter-spacing: 2px;
+}
+
+.active {
+    color: rgb(255, 81, 0) !important;
+    font-weight: 700;
+    text-shadow: black 1px 1px 0, black -1px -1px 0, 
+    black -1px 1px 0, black 1px -1px 0;
+}
+
+.header-nav-list li > a:hover {
+    color: rgb(255, 81, 0) !important;
+    font-weight: 700;
+    text-shadow: black 1px 1px 0, black -1px -1px 0, 
+    black -1px 1px 0, black 1px -1px 0;
+}
+
+.header-nav img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: 30px;
+}
+
+.main-info {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.pokemon-logo {
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 55px;
+    height: 320px;
+    width: 300px;
+    background: red;
+    background: url('./assets/logo.png') no-repeat;
+    background-size: 100%;
+}
+
+.pokemon-logo2 {
+    display: block;
+    position: absolute;
+    top: 15px;
+    right: 75px;
+    height: 300px;
+    width: 250px;
+    background: red;
+    background: url('./assets/logo2.png') no-repeat;
+    background-size: 100%;
+}
+
+.main-info h2 {
+    font-size: 40px;
+    margin-top: 80px;
+}
+
+.main-info p {
+    font-size: 22px;
+    margin-top: 5px;
+}
+
+.search-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 80px;
+}
+
+.user-input {
+    width: 30%;
+    height: 45px;
+    outline: 0;
+    padding-left: 20px;
+    font-size: 18px;
+    border: 1px solid #000;
+    border-right: 0;
+}
+
+.submit {
+    height: 45px;
+    border: 1px solid rgb(255, 123, 15);
+    width: 140px;
+    cursor: pointer;
+    font-size: 18px;
+    background-color: rgb(255, 123, 15);
+    transition: .25s;
+}
+
+.submit:hover {
+    background-color: rgb(255, 107, 22);
+    box-shadow: 0 0 20px rgb(214, 84, 8);
+    transform: scale(1.2);
+}
+
+.user-history {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.history-blocks {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 300px;
+    margin-top: 20px;
+}
+
+.not-items {
+    color: rgb(119, 119, 119);
+    opacity: .8;
+    font-size: 18px;
+}

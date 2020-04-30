@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poxey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='search.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="header-logo">
+            <h1>Poxey</h1>
+        </div>
+        <div class="header-nav">
+            <ul class="header-nav-list">
+                <li><a class="active" href="#">Поиск</a></li>
+                <li><a href="#">Приключение</a></li>
+                <li><a href="#">Инвентарь</a></li>
+                <li><a href="#">*имя*</a></li>
+            </ul>
+            <img src="https://sun9-10.userapi.com/c855420/v855420149/aeef9/AJ2U6OFs2E0.jpg" alt="avatar">
+        </div>
+    </header>
+    <div class="main-info">
+        <span class="pokemon-logo" data-tilt></span>
+        <h2>Мы знаем <span class="important-text">всех</span> покемонов! Проверьте сами :)</h2>
+        <p>Введите имя <span class="important-text">покемона</span>, о котором вы хотите узнать информацию</p>
+        <span class="pokemon-logo2" data-tilt></span>
+    </div>
+    <div class="search-input">
+        <form class="form">
+            <input class="user-input" type="text" required placeholder="Введите имя покемона (на английском языке)">
+            <button class="submit">Найти</button>
+        </form>
+    </div>
+    <div class="user-history">
+        <h2>Ваша история</h2>
+        <div class="history-blocks">
+            <p class="not-items">Ваша история пуста :(</p>
+        </div>
+    </div>
+    <script
+  src="https://code.jquery.com/jquery-3.5.0.min.js"
+  integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+  crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='tilt.jquery.min.js') }}"></script>
+</body>
+</html>

@@ -54,7 +54,7 @@ def signin():
         password = request.form['password']
         user = User.query.filter_by(name=username).first()
         if user and user.password == password:
-            return redirect(url_for('profile', name=user.name))
+            return redirect(url_for('search', name=user.name))
     return render_template("signin.html")
 
 
@@ -65,6 +65,10 @@ def profile(name):
 @app.route('/adventure', methods=['GET', 'POST'])
 def adventure():
     return render_template("adventure.html")
+    
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    return render_template("search.html")
 
 if __name__ == "__main__":
     db.create_all()
