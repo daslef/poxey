@@ -35,6 +35,10 @@ def index():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+
+    if session:
+        return redirect(url_for("search"))
+
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
@@ -55,6 +59,10 @@ def signup():
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
+
+    if session:
+        return redirect(url_for("search"))
+
     if request.method == "POST":
         username = request.form['username']
         password = request.form['password']
@@ -62,6 +70,7 @@ def signin():
         if user and user.password == password:
             session['username'] = username
             return redirect(url_for('search', name=user.name))
+
     return render_template("signin.html")
 
 
