@@ -1,6 +1,7 @@
 from datetime import timedelta
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = '*PInefdlyv5@'
@@ -43,6 +44,7 @@ def signup():
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
+        password = generate_password_hash(password)
         found_user = User.query.filter_by(name=username).first()
 
         if found_user:
@@ -67,12 +69,16 @@ def signin():
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(name=username).first()
-        if user and user.password == password:
+        if user and check_password_hash(user.password, password):
             session['username'] = username
             return redirect(url_for('search', name=user.name))
 
     return render_template("signin.html")
 
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for("index"))
 
 @app.route('/profile/<name>', methods=['GET', 'POST'])
 def profile(name):
