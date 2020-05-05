@@ -93,6 +93,10 @@ def adventure():
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     return render_template("search.html")
+    
+@app.route('/pokemon')
+def pokemon():
+    return render_template("pokemon.html")
 
 
 if __name__ == "__main__":

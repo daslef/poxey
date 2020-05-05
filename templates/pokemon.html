@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poxey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/pokemon/pokemon.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+    <div class="container">
+        <a href="/search"><img class="left-arrow" src="./static/assets/left-arrow.png" alt=""></a>
+        <div class="pokemon-img">
+            <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/100.png" alt="test">
+        </div>
+        <div class="pokemon-stats">
+            <div class="left-column">
+                <ul class="left-column-list">
+                    <li>Name</li>
+                    <li>Type</li>
+                    <li>Height</li>
+                    <li>Weight</li>
+                </ul>
+            </div>
+            <div class="right-column">
+                <ul class="right-column-list">
+                    <li>имяпокемона</li>
+                    <li>тип</li>
+                    <li>рост</li>
+                    <li>вес</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
