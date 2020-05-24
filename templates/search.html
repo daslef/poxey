@@ -30,16 +30,32 @@
         <span class="pokemon-logo2" data-tilt></span>
     </div>
     <div class="search-input">
-        <form class="form">
-            <input class="user-input" type="text" required placeholder="Введите имя покемона (на английском языке)">
+        <form class="form" method="POST">
+            <input class="user-input" name="user_input" type="text" required placeholder="Введите имя покемона (на английском языке)">
             <button class="submit">Найти</button>
         </form>
     </div>
     <div class="user-history">
-        <h2>Ваша история</h2>
-        <div class="history-blocks">
-            <p class="not-items">Ваша история пуста :(</p>
-        </div>
+        <h2>Найденный покемон</h2>
+        {% if session['pokemon_name'] %}
+            <div class="pokemon-block" style="display: flex; align-items: center; margin-top: 40px;">
+                <div class="pokemon-block__text">
+                    <style>p {margin-top: 7px; font-size: 24px;}</style>
+                    <p>Ид: {{ session['pokemon_id'] }}</p>
+                    <p>Имя: {{ session['pokemon_name'].title() }}</p>
+                    <p>Рост: {{ session['pokemon_height'] / 10 }} м.</p>
+                    <p>Вес: {{ session['pokemon_weight'] / 10 }} кг.</p>
+                    <p>Тип: {{ session['pokemon_types'][0] }}</p>
+                </div>
+                <div class="pokemon-block__image" style="margin-left: 20px;">
+                    <img src="{{ session['pokemon_img'] }}" style="width: 135px; height: auto;">
+                </div>
+            </div>
+        {% else %}
+            <div class="history-blocks">
+                <p class="not-items">Покемон не найден :(</p>
+            </div>
+        {% endif %}
     </div>
     <script
   src="https://code.jquery.com/jquery-3.5.0.min.js"

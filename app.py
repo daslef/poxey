@@ -2,6 +2,7 @@ from datetime import timedelta
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from poke import get_pokemon_data
 
 app = Flask(__name__)
 app.secret_key = '*PInefdlyv5@'
@@ -10,7 +11,6 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.permanent_session_lifetime = timedelta(hours=4)
 
 db = SQLAlchemy(app)
-
 
 class User(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
@@ -29,7 +29,7 @@ class User(db.Model):
 
 @app.route('/')
 def index():
-    if session:
+    if session.get('username'):
         return redirect(url_for("search"))
     return render_template("index.html")
 
@@ -37,7 +37,7 @@ def index():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
 
-    if session:
+    if session.get('username'):
         return redirect(url_for("search"))
 
     if request.method == 'POST':
@@ -48,7 +48,7 @@ def signup():
         found_user = User.query.filter_by(name=username).first()
 
         if found_user:
-            print(found_user)
+            return redirect(url_for("index"))
         else:
             user = User(username, email, password)
             db.session.add(user)
@@ -62,7 +62,7 @@ def signup():
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
 
-    if session:
+    if session.get('username'):
         return redirect(url_for("search"))
 
     if request.method == "POST":
@@ -78,6 +78,8 @@ def signin():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
+    session.pop('pokemon_username', None)
+    session.pop('pokemon_img', None)
     return redirect(url_for("index"))
 
 @app.route('/profile/<name>', methods=['GET', 'POST'])
@@ -92,11 +94,23 @@ def adventure():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
+    if request.method == "POST":
+        user_input = request.form["user_input"].lower()
+        pokemon_data = get_pokemon_data(user_input)
+        
+        if(pokemon_data != "Error"):
+            session['pokemon_id'] = pokemon_data["_id"]
+            session['pokemon_name'] = pokemon_data["name"]
+            session['pokemon_height'] = pokemon_data["height"]
+            session['pokemon_weight'] = pokemon_data["weight"]
+            session['pokemon_types'] = pokemon_data["pokemonType"]
+            session['pokemon_img'] = pokemon_data["sprites"]
+        
     return render_template("search.html")
     
-@app.route('/pokemon')
+@app.route('/history')
 def pokemon():
-    return render_template("pokemon.html")
+    return render_template("history.html")
 
 
 if __name__ == "__main__":
