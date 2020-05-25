@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.secret_key = '*PInefdlyv5@'
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///users.sqlite3'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.permanent_session_lifetime = timedelta(hours=4)
+app.permanent_session_lifetime = timedelta(hours=1)
 
 db = SQLAlchemy(app)
 
@@ -17,6 +17,7 @@ class User(db.Model):
     name = db.Column(db.String(20))
     email = db.Column(db.String(100))
     password = db.Column(db.String(100))
+    user_requests = db.relationship('UserRequests', backref='user', lazy=True)
 
     def __init__(self, name, email, password):
         self.name = name
@@ -25,6 +26,24 @@ class User(db.Model):
 
     def __str__(self):
         return f"Username - {self.name} Email - {self.email}"
+        
+class UserRequests(db.Model):
+    _id = db.Column("id", db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    pokemon_id = db.Column(db.Integer)
+    pokemon_name = db.Column(db.String(60))
+    pokemon_type = db.Column(db.String(20))
+    pokemon_img = db.Column(db.String(400))
+    
+    def __init__(self, user_id, pokemon_id, pokemon_name, pokemon_type, pokemon_img):
+        self.user_id = user_id
+        self.pokemon_id = pokemon_id
+        self.pokemon_name = pokemon_name
+        self.pokemon_type = pokemon_type
+        self.pokemon_img = pokemon_img
+        
+    def __str__(self):
+        return f"UserID - {self.user_id} Pokemon - {self.pokemon_name}"
 
 
 @app.route('/')
@@ -48,7 +67,8 @@ def signup():
         found_user = User.query.filter_by(name=username).first()
 
         if found_user:
-            return redirect(url_for("index"))
+            flash("Пользователь с таким именем уже зарегистрирован!")
+            return redirect(url_for("signup"))
         else:
             user = User(username, email, password)
             db.session.add(user)
@@ -72,28 +92,29 @@ def signin():
         if user and check_password_hash(user.password, password):
             session['username'] = username
             return redirect(url_for('search', name=user.name))
+        else:
+            flash("Неправильный логин или пароль!")
 
     return render_template("signin.html")
 
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    session.pop('pokemon_username', None)
-    session.pop('pokemon_img', None)
+    session.pop('pokemon_name', None)
     return redirect(url_for("index"))
 
-@app.route('/profile/<name>', methods=['GET', 'POST'])
-def profile(name):
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    if not session.get('username'):
+        return redirect(url_for("index"))
+        
     return render_template("profile.html")
-
-
-@app.route('/adventure', methods=['GET', 'POST'])
-def adventure():
-    return render_template("adventure.html")
-
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
+    if not session.get('username'):
+        return redirect(url_for("index"))
+    
     if request.method == "POST":
         user_input = request.form["user_input"].lower()
         pokemon_data = get_pokemon_data(user_input)
@@ -105,13 +126,31 @@ def search():
             session['pokemon_weight'] = pokemon_data["weight"]
             session['pokemon_types'] = pokemon_data["pokemonType"]
             session['pokemon_img'] = pokemon_data["sprites"]
+            
+            found_user = User.query.filter_by(name=session['username']).first()
+            
+            user_req = UserRequests(found_user._id, pokemon_data["_id"], pokemon_data["name"], pokemon_data["pokemonType"][0], pokemon_data["sprites"])
+            db.session.add(user_req)
+            db.session.commit()
+        else:
+            session.pop('pokemon_name', None)
         
     return render_template("search.html")
     
 @app.route('/history')
 def pokemon():
-    return render_template("history.html")
-
+    if not session.get('username'):
+        return redirect(url_for("index"))
+    
+    found_user = User.query.filter_by(name=session['username']).first()
+    user_history = UserRequests.query.filter_by(user_id=found_user._id)
+    
+    if len(list(user_history)) < 9:
+        necessary_pokemons = list(user_history)
+    else:
+        necessary_pokemons = user_history[len(list(user_history)) - 9:]
+    
+    return render_template("history.html", pokemons=necessary_pokemons)
 
 if __name__ == "__main__":
     db.create_all()

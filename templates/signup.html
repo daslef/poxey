@@ -37,6 +37,15 @@
                     <small>Error message</small>
                 </div>
                 <button type="submit">Зарегистрироваться</button>
+                {% with messages = get_flashed_messages() %} 
+                    {% if messages %}
+                        {% for msg in messages %}
+                            <p style="text-align: center; font-size: 12px; margin-top: 10px; color: red;">
+                                {{msg}}
+                            </p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith%}
             </form>    
         </div>
     </div>

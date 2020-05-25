@@ -4,32 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poxey</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/pokemon/pokemon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/search/search.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/history/history.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
-    <div class="container">
-        <a href="/search"><img class="left-arrow" src="./static/assets/left-arrow.png" alt=""></a>
-        <div class="pokemon-img">
-            <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/100.png" alt="test">
+    <header class="header">
+        <div class="header-logo">
+            <h1>Poxey</h1>
         </div>
-        <div class="pokemon-stats">
-            <div class="left-column">
-                <ul class="left-column-list">
-                    <li>Name</li>
-                    <li>Type</li>
-                    <li>Height</li>
-                    <li>Weight</li>
-                </ul>
-            </div>
-            <div class="right-column">
-                <ul class="right-column-list">
-                    <li>имяпокемона</li>
-                    <li>тип</li>
-                    <li>рост</li>
-                    <li>вес</li>
-                </ul>
-            </div>
+        <div class="header-nav">
+            <ul class="header-nav-list">
+                <li><a href="search">Поиск</a></li>
+                <li><a class="active" href="history">История</a></li>
+                <li><a href="#">{{ session['username'] }}</a></li>
+                <li><a class="logout" href="logout">Выйти</a></li>
+            </ul>
+        </div>
+    </header>
+    <div class="history">
+        <h2>Ваша история</h2>
+        <div class="history-content">
+            {% for pokemon in pokemons %}
+                <div class="pokemon-block">
+                    <div class="pokemon-block__text">
+                        <p>Ид: {{ pokemon['pokemon_id'] }}</p>
+                        <p>Имя: {{ pokemon['pokemon_name'].title() }}</p>
+                        <p>Тип: {{ pokemon['pokemon_type'].title() }}</p>
+                    </div>
+                    <div class="pokemon-block__img">
+                        <img src="{{ pokemon['pokemon_img'] }}">
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 </body>
