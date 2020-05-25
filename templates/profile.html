@@ -26,14 +26,14 @@
         <h2>Ваш профиль</h2>
         <div class="profile-content">
             <div class="profile-content__text">
-                <p>Ид: 1</p>
-                <p>Логин: Mowl</p>
-                <p>Почта: maikezseller@gmail.com</p>
-                <p>Количество запросов: 100</p>
+                <p>Идентификатор: {{user_data['id']}}</p>
+                <p>Логин: {{user_data['username']}}</p>
+                <p>Почта: {{user_data['email']}}</p>
+                <p>Количество запросов: {{user_data['count']}}</p>
             </div>
             <div class="profile-content__favor">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/123.png" alt="">
-                <p>Ваш любимый покемон: Rapidash</p>
+                <img src="{{user_data['img']}}" alt="">
+                <p>Ваш любимый покемон: {{user_data['pokemon'].title()}}</p>
             </div>
         </div>
         <div class="profile-buttons">

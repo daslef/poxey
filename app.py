@@ -107,8 +107,21 @@ def logout():
 def profile():
     if not session.get('username'):
         return redirect(url_for("index"))
-        
-    return render_template("profile.html")
+    user = User.query.filter_by(name=session['username']).first()
+    user_history = list(UserRequests.query.filter_by(user_id=user._id))
+    pokemon_count = {}
+
+    for p in user_history:
+        if p.pokemon_name not in pokemon_count.keys():
+            pokemon_count.update({p.pokemon_name: 1})
+        else:
+            pokemon_count[p.pokemon_name] += 1
+
+    popular_pokemon = sorted(pokemon_count.items(), key=lambda x: x[1], reverse=True)[0][0]
+    popular_img = UserRequests.query.filter_by(pokemon_name=popular_pokemon).first().pokemon_img
+    user_data = {"id":user._id, "username":user.name, "email":user.email, "count":len(user_history),"pokemon":popular_pokemon, "img": popular_img} 
+    
+    return render_template("profile.html", user_data=user_data)
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
