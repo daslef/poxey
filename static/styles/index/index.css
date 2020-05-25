@@ -133,3 +133,31 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+@media all and (max-width: 1000px) {
+    .main-banner__header p {
+        font-size: 18px;
+    }
+    
+    .main-banner__header h1 {
+        font-size: 60px;
+        margin-bottom: 30px;
+    }
+    
+    .main-banner__header h1::before {
+        width: 140px;
+        height: 140px;
+        top: -55px;
+        left: -160px;
+    }
+    
+    .main-banner__header h1::after {
+        top: -30px;
+        width: 140px;
+        height: 140px;
+    }
+    
+    .main-banner__buttons a {
+        font-size: 18px;
+    }
+}

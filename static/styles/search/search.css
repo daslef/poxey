@@ -87,7 +87,7 @@ body {
     top: 10px;
     left: 55px;
     height: 320px;
-    width: 300px;
+    width: 250px;
     background: red;
     background: url('../../assets/logo.png') no-repeat;
     background-size: 100%;
@@ -99,7 +99,7 @@ body {
     top: 15px;
     right: 75px;
     height: 300px;
-    width: 250px;
+    width: 200px;
     background: red;
     background: url('../../assets/logo2.png') no-repeat;
     background-size: 100%;
@@ -186,4 +186,70 @@ body {
     color: #000;
     opacity: .8;
     font-size: 18px;
+}
+
+@media all and (max-width: 1465px) {
+    .pokemon-logo {
+        width: 200px;
+    }
+    
+    .pokemon-logo2 {
+        width: 150px;
+    }
+}
+
+@media all and (max-width: 1315px) {
+    .pokemon-logo {
+        top: 300px;
+    }
+    
+    .pokemon-logo2 {
+        top: 300px;
+    }
+}
+
+@media all and (max-width: 1025px) {
+    .main-info h2 {
+        font-size: 30px;
+    }
+    
+    .user-input {
+        font-size: 16px;
+    }
+}
+
+@media all and (max-width: 880px) {
+    .main-info h2 {
+        font-size: 25px;
+    }
+    
+    .user-input { 
+        width: 70%;
+    }
+    
+    .user-input {
+        font-size: 14px;
+    }
+    
+    .pokemon-logo, .pokemon-logo2 {
+        display: none;
+    }
+    
+    .header {
+        flex-direction: column;
+    }
+    
+    .header-logo h1 {
+        margin-left: 0;
+        margin-bottom: 15px;
+        margin-top: 15px;
+    }
+    
+    .main-info h2 {
+        font-size: 22px;
+    }
+    
+    .main-info p {
+        font-size: 18px;
+    }
 }

@@ -35,3 +35,31 @@
     font-size: 20px;
     margin-bottom: 5px;
 }
+
+@media all and (max-width: 1025px) {
+    .history {
+        margin-top: 60px;
+    }
+    
+    .history-content {
+        grid-template-rows: 110px 110px 110px;
+        grid-template-columns: 230px 230px 230px;
+    }
+    
+    .pokemon-block__text p {
+        font-size: 16px;
+        margin-bottom: 0;
+    }
+}
+
+@media all and (max-width: 730px) {
+    .history-content {
+        grid-template-rows: 110px 110px 110px;
+        grid-template-columns: 195px 195px 195px;
+    }
+    
+    .pokemon-block__text p {
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+}
