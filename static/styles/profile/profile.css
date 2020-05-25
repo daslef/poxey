@@ -1,0 +1,61 @@
+.profile {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile h2 {
+    font-size: 45px;
+}
+
+.profile-content {
+    display: flex;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.profile-content__text p {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.profile-content__favor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 40px;
+}
+
+.profile-content__favor p {
+    font-size: 20px;
+}
+
+.profile-content__favor img {
+    width: 116px;
+    height: 116px;
+}
+
+.profile-buttons {
+    margin-top: 30px;
+}
+
+.change-name {
+    width: 180px;
+    height: 50px;
+    background-color: rgb(255, 116, 36);
+    box-shadow: 0 0 10px rgb(255, 101, 12);
+    color: #fff;
+    border-radius: 40px;
+    cursor: pointer;
+    border: 0;
+    transition: .2s;
+    outline: 0;
+    font-size: 18px;
+}
+
+.change-name:hover {
+    box-shadow: 0 0 20px rgb(214, 84, 8);
+    transform: scale(1.1);
+}

@@ -4,8 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poxey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/search/search.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile/profile.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
-    <h1>Test Profile Page</h1>
+    <header class="header">
+        <div class="header-logo">
+            <h1>Poxey</h1>
+        </div>
+        <div class="header-nav">
+            <ul class="header-nav-list">
+                <li><a href="search">Поиск</a></li>
+                <li><a href="history">История</a></li>
+                <li><a class="active" href="profile">{{ session['username'] }}</a></li>
+                <li><a class="logout" href="logout">Выйти</a></li>
+            </ul>
+        </div>
+    </header>
+    <div class="profile">
+        <h2>Ваш профиль</h2>
+        <div class="profile-content">
+            <div class="profile-content__text">
+                <p>Ид: 1</p>
+                <p>Логин: Mowl</p>
+                <p>Почта: maikezseller@gmail.com</p>
+                <p>Количество запросов: 100</p>
+            </div>
+            <div class="profile-content__favor">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/123.png" alt="">
+                <p>Ваш любимый покемон: Rapidash</p>
+            </div>
+        </div>
+        <div class="profile-buttons">
+            <button class="change-name">Сменить имя</button>
+        </div>
+    </div>
 </body>
 </html>
