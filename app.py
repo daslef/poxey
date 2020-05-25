@@ -110,20 +110,27 @@ def logout():
 def profile():
     if not session.get('username'):
         return redirect(url_for("index"))
+    
     user = User.query.filter_by(name=session['username']).first()
     user_history = list(UserRequests.query.filter_by(user_id=user._id))
-    pokemon_count = {}
+    pokemons_count = {}
 
-    for p in user_history:
-        if p.pokemon_name not in pokemon_count.keys():
-            pokemon_count.update({p.pokemon_name: 1})
+    for req in user_history:
+        if req.pokemon_name not in pokemons_count.keys():
+            pokemons_count.update({req.pokemon_name: 1})
         else:
-            pokemon_count[p.pokemon_name] += 1
+            pokemons_count[req.pokemon_name] += 1
 
-    popular_pokemon = sorted(pokemon_count.items(), key=lambda x: x[1], reverse=True)[0][0]
+    popular_pokemon = sorted(pokemons_count.items(), key=lambda x: x[1], reverse=True)[0][0]
     popular_img = UserRequests.query.filter_by(pokemon_name=popular_pokemon).first().pokemon_img
-    user_data = {"id": user._id, "username": user.name, "email": user.email, "count": len(user_history),
-                 "pokemon": popular_pokemon, "img": popular_img}
+    user_data = {
+        "id": user._id,
+        "username": user.name, 
+        "email": user.email, 
+        "count": len(user_history),
+        "pokemon": popular_pokemon, 
+        "img": popular_img
+    }
 
     return render_template("profile.html", user_data=user_data)
 
@@ -139,7 +146,6 @@ def search():
                 pokemon_data = get_pokemon_data(randint(1, 807))
                 send_info(pokemon_data, session)
         except:
-
             user_input = request.form["user_input"].lower()
             pokemon_data = get_pokemon_data(user_input)
 

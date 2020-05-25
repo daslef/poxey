@@ -154,9 +154,13 @@ body {
     font-size: 18px;
     background-color: rgb(255, 123, 15);
     transition: .25s;
-    margin-top: 25px;
+    margin-top: 20px;
     border-radius: 30px;
     outline: 0;
+}
+
+.random-submit {
+    width: 200px;
 }
 
 .submit:hover {
@@ -186,6 +190,21 @@ body {
     color: #000;
     opacity: .8;
     font-size: 18px;
+}
+
+.user-input::placeholder {
+    color: #000;
+    opacity: .8;
+}
+
+.user-input::-moz-placeholder {
+    color: #000;
+    opacity: .8;
+}
+
+.user-input::-webkit-input-placeholder {
+    color: #000;
+    opacity: .8;
 }
 
 @media all and (max-width: 1465px) {
