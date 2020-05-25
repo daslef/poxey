@@ -2,7 +2,8 @@ from datetime import timedelta
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from poke import get_pokemon_data
+from poke import get_pokemon_data, send_info
+from random import randint
 
 app = Flask(__name__)
 app.secret_key = '*PInefdlyv5@'
@@ -11,6 +12,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.permanent_session_lifetime = timedelta(hours=1)
 
 db = SQLAlchemy(app)
+
 
 class User(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
@@ -26,7 +28,8 @@ class User(db.Model):
 
     def __str__(self):
         return f"Username - {self.name} Email - {self.email}"
-        
+
+
 class UserRequests(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -34,14 +37,14 @@ class UserRequests(db.Model):
     pokemon_name = db.Column(db.String(60))
     pokemon_type = db.Column(db.String(20))
     pokemon_img = db.Column(db.String(400))
-    
+
     def __init__(self, user_id, pokemon_id, pokemon_name, pokemon_type, pokemon_img):
         self.user_id = user_id
         self.pokemon_id = pokemon_id
         self.pokemon_name = pokemon_name
         self.pokemon_type = pokemon_type
         self.pokemon_img = pokemon_img
-        
+
     def __str__(self):
         return f"UserID - {self.user_id} Pokemon - {self.pokemon_name}"
 
@@ -55,7 +58,6 @@ def index():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-
     if session.get('username'):
         return redirect(url_for("search"))
 
@@ -81,7 +83,6 @@ def signup():
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
-
     if session.get('username'):
         return redirect(url_for("search"))
 
@@ -97,11 +98,13 @@ def signin():
 
     return render_template("signin.html")
 
+
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     session.pop('pokemon_name', None)
     return redirect(url_for("index"))
+
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
@@ -119,53 +122,57 @@ def profile():
 
     popular_pokemon = sorted(pokemon_count.items(), key=lambda x: x[1], reverse=True)[0][0]
     popular_img = UserRequests.query.filter_by(pokemon_name=popular_pokemon).first().pokemon_img
-    user_data = {"id":user._id, "username":user.name, "email":user.email, "count":len(user_history),"pokemon":popular_pokemon, "img": popular_img} 
-    
+    user_data = {"id": user._id, "username": user.name, "email": user.email, "count": len(user_history),
+                 "pokemon": popular_pokemon, "img": popular_img}
+
     return render_template("profile.html", user_data=user_data)
+
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if not session.get('username'):
         return redirect(url_for("index"))
-    
+
     if request.method == "POST":
-        user_input = request.form["user_input"].lower()
-        pokemon_data = get_pokemon_data(user_input)
-        
-        if(pokemon_data != "Error"):
-            session['pokemon_id'] = pokemon_data["_id"]
-            session['pokemon_name'] = pokemon_data["name"]
-            session['pokemon_height'] = pokemon_data["height"]
-            session['pokemon_weight'] = pokemon_data["weight"]
-            session['pokemon_types'] = pokemon_data["pokemonType"]
-            session['pokemon_img'] = pokemon_data["sprites"]
-            
-            found_user = User.query.filter_by(name=session['username']).first()
-            
-            user_req = UserRequests(found_user._id, pokemon_data["_id"], pokemon_data["name"], pokemon_data["pokemonType"][0], pokemon_data["sprites"])
-            db.session.add(user_req)
-            db.session.commit()
-        else:
-            session.pop('pokemon_name', None)
-        
+        try:
+            if request.form['random_button']:
+                pokemon_data = get_pokemon_data(randint(1, 807))
+                send_info(pokemon_data, session)
+        except:
+
+            user_input = request.form["user_input"].lower()
+            pokemon_data = get_pokemon_data(user_input)
+
+            if pokemon_data != "Error":
+                send_info(pokemon_data, session)
+
+                found_user = User.query.filter_by(name=session['username']).first()
+
+                user_req = UserRequests(found_user._id, pokemon_data["_id"], pokemon_data["name"], pokemon_data["pokemonType"][0], pokemon_data["sprites"])
+                db.session.add(user_req)
+                db.session.commit()
+            else:
+                session.pop('pokemon_name', None)
+
     return render_template("search.html")
-    
+
+
 @app.route('/history')
 def pokemon():
     if not session.get('username'):
         return redirect(url_for("index"))
-    
+
     found_user = User.query.filter_by(name=session['username']).first()
     user_history = UserRequests.query.filter_by(user_id=found_user._id)
-    
+
     if len(list(user_history)) < 9:
         necessary_pokemons = list(user_history)
     else:
         necessary_pokemons = user_history[len(list(user_history)) - 9:]
-    
+
     return render_template("history.html", pokemons=necessary_pokemons)
+
 
 if __name__ == "__main__":
     db.create_all()
     app.run(debug=True)
-

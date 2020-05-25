@@ -115,13 +115,13 @@ body {
     margin-top: 5px;
 }
 
-.search-input {
+.search-input, .random-input {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.user-input::placeholder {
+.user-input ::placeholder {
     color: black;
     opacity: .8;
 }
