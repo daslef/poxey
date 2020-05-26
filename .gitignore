@@ -119,4 +119,6 @@ dmypy.json
 # Ignore all local history of files
 .history
 
+*.sqlite3
+
 # End of https://www.gitignore.io/api/python,visualstudiocode

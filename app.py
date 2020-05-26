@@ -1,9 +1,8 @@
-from datetime import timedelta
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from poke import get_pokemon_data, send_info
-from model import db, create_app, get_user_by_name, add_user, get_user_history, get_pokemon_by_name, add_user_request, get_user_by_email
+from model import db, create_app, get_user_by_name, add_user, get_user_history, get_pokemon_by_name, add_user_request, get_user_by_email, get_all_users, make_user_admin
 from random import randint
 
 app = create_app()
@@ -145,6 +144,33 @@ def rating():
         return redirect(url_for("index"))
         
     return render_template("rating.html")
+
+@app.route("/admin")
+def admin_panel():
+    if not session.get("username"):
+        return redirect(url_for("index"))
+        
+    found_user = get_user_by_name(session["username"])
+    
+    if not found_user.is_admin:
+        return redirect(url_for("search"))
+    
+    return render_template("adminPanel.html")
+
+@app.route("/process_data/", methods=["POST"])  
+def test():
+    if not session.get("username"):
+        return redirect(url_for("index"))
+        
+    found_user = get_user_by_name(session["username"])
+    
+    if not found_user.is_admin:
+        return redirect(url_for("search"))
+    
+    print(get_all_users())
+    
+    return render_template("adminPanel.html")
+    
 
 if __name__ == "__main__":
     db.create_all()
