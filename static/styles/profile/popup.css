@@ -1,0 +1,63 @@
+.change-name-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    height: 200px;
+    width: 400px;
+    background: rgb(255, 81, 0);
+    display: none;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 15px;
+    z-index: 9999;
+}
+
+.change-name-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.change-name-form input {
+    background-color: transparent;
+    font-size: 20px;
+    outline: none;
+    border: 1px solid #000;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.change-name-form input::placeholder {
+    color: #000;
+    opacity: .8;
+}
+
+.change-name-form button {
+    border: 0;
+    border-radius: 20px;
+    background: rgb(255,192,0);
+    background: linear-gradient(90deg, rgba(255,192,0,1) 0%, rgba(255,173,57,1) 49%, rgba(255,142,18,1) 100%);
+    width: 100px;
+    height: 40px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.change-name-form button:hover {
+    transform: scale(1.1);
+}
+
+#cross {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+}

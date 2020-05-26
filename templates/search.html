@@ -33,10 +33,15 @@
             <button class="submit">Найти</button>
         </form>
     </div>
+    <div class="random-input">
+        <form class="random-form" method="POST">
+            <button class="submit random-submit" name="random_button" value="Pikachu">Случайный Покемон</button>
+        </form>
+    </div>
     <div class="user-history">
         <h2>Найденный покемон</h2>
         {% if session['pokemon_name'] %}
-            <div class="pokemon-block" style="display: flex; align-items: center; margin-top: 40px;">
+            <div class="pokemon-block" style="display: flex; align-items: center; margin-top: 20px;">
                 <div class="pokemon-block__text">
                     <style>p {margin-top: 7px; font-size: 24px;}</style>
                     <p>ID пользователя: {{ session['pokemon_id'] }}</p>

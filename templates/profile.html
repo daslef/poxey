@@ -6,6 +6,7 @@
     <title>Poxey</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/search/search.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile/profile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile/popup.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
@@ -40,5 +41,14 @@
             <button class="change-name">Сменить имя</button>
         </div>
     </div>
+    <div class="change-name-popup">
+        <img id="cross" src="{{ url_for('static', filename='assets/cross.png') }}">
+        <form class="change-name-form" method="POST">
+            <input type="text" required minlength="4" placeholder="Введите новое имя">
+            <button>Изменить</button>
+        </form>
+    </div>
+    
+    <script src="{{ url_for('static', filename='scripts/profile/changeName.js') }}"></script>
 </body>
 </html>
