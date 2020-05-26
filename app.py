@@ -125,7 +125,7 @@ def search():
 
 
 @app.route("/history")
-def pokemon():
+def history():
     if not session.get("username"):
         return redirect(url_for("index"))
 
@@ -138,6 +138,13 @@ def pokemon():
         necessary_pokemons = user_history[len(list(user_history)) - 9:]
 
     return render_template("history.html", pokemons=necessary_pokemons)
+    
+@app.route("/rating")
+def rating():
+    if not session.get("username"):
+        return redirect(url_for("index"))
+        
+    return render_template("rating.html")
 
 if __name__ == "__main__":
     db.create_all()

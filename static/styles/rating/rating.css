@@ -1,0 +1,58 @@
+.rating {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    margin-top: 20px;
+    flex-direction: column;
+}
+
+.rating h1 {
+    font-size: 45px;
+    margin-bottom: 20px;
+}
+
+.ratings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.ratings h2 {
+    font-size: 28px;
+}
+
+.pokemons-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+}
+
+.pokemons-rating__content {
+    width: 80%;
+}
+
+.pokemon-row {
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px #000 solid;
+}
+
+.place {
+    width: 15%;
+    text-align: center;
+}
+
+.name {
+    width: 45%;
+    text-align: center;
+}
+
+.count {
+    width: 33%;
+    text-align: center;
+}

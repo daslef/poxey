@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poxey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/search/search.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/rating/rating.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="header-logo">
+            <h1>Poxey</h1>
+        </div>
+        <div class="header-nav">
+            <ul class="header-nav-list">
+                <li><a href="search">Поиск</a></li>
+                <li><a href="history">История</a></li>
+                <li><a class="active" href="rating">Рейтинг</a></li>
+                <li><a href="profile">{{ session['username'] }}</a></li>
+                <li><a class="logout" href="logout">Выйти</a></li>
+            </ul>
+        </div>
+    </header>
+    <div class="rating">
+        <h1>Рейтинги запросов</h1>
+        <div class="ratings">
+            <div class="pokemons-rating">
+                <h2>Рейтинг покемонов</h2>
+                <div class="pokemons-rating__content">
+                    <div class="pokemon-row">
+                        <p class="place">Место</p>
+                        <p class="name">Имя покемона</p>
+                        <p class="count">Количество запросов</p>
+                    </div>
+                    <div class="pokemon-row">
+                        <p class="place">#1</p>
+                        <p class="name">Rapidash</p>
+                        <p class="count">32</p>
+                    </div>
+                    <div class="pokemon-row">
+                        <p class="place">#1</p>
+                        <p class="name">Rapidash</p>
+                        <p class="count">32</p>
+                    </div>
+                    <div class="pokemon-row">
+                        <p class="place">#1</p>
+                        <p class="name">Rapidash</p>
+                        <p class="count">32</p>
+                    </div>
+                    <div class="pokemon-row">
+                        <p class="place">#1</p>
+                        <p class="name">Rapidash</p>
+                        <p class="count">32</p>
+                    </div>
+                    <div class="pokemon-row">
+                        <p class="place">#1</p>
+                        <p class="name">Rapidash</p>
+                        <p class="count">32</p>
+                    </div>
+                </div>
+            </div>
+            <div class="pokemons-rating">
+                <h2>Рейтинг игроков</h2>
+                <div class="pokemons-rating__content">
+                    <div class="pokemon-row">
+                        <p class="place">Место</p>
+                        <p class="name">Имя покемона</p>
+                        <p class="count">Количество запросов</p>
+                    </div>
+                    <div class="pokemon-row">
+                        <p class="place">#1</p>
+                        <p class="name">Rapidash</p>
+                        <p class="count">32</p>
+                    </div>
+                    <div class="pokemon-row">
+                        <p class="place">#1</p>
+                        <p class="name">Rapidash</p>
+                        <p class="count">32</p>
+                    </div>
+                    <div class="pokemon-row">
+                        <p class="place">#1</p>
+                        <p class="name">Rapidash</p>
+                        <p class="count">32</p>
+                    </div>
+                    <div class="pokemon-row">
+                        <p class="place">#1</p>
+                        <p class="name">Rapidash</p>
+                        <p class="count">32</p>
+                    </div>
+                    <div class="pokemon-row">
+                        <p class="place">#1</p>
+                        <p class="name">Rapidash</p>
+                        <p class="count">32</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
