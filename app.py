@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from poke import get_pokemon_data, send_info
-from model import db, create_app, get_user_by_name, add_user, get_user_history, get_pokemon_by_name, add_user_request
+from model import db, create_app, get_user_by_name, add_user, get_user_history, get_pokemon_by_name, add_user_request, get_user_by_email
 from random import randint
 
 app = create_app()
@@ -27,10 +27,12 @@ def signup():
         email = request.form["email"]
         password = request.form["password"]
         password = generate_password_hash(password)
-        found_user = get_user_by_name(username)
 
-        if found_user:
+        if get_user_by_name(username):
             flash("Пользователь с таким именем уже зарегистрирован!")
+            return redirect(url_for("signup"))
+        elif get_user_by_email(email):
+            flash("Пользователь с такой почтой уже зарегистрирован!")
             return redirect(url_for("signup"))
         else:
             add_user(username, email, password)
@@ -49,6 +51,7 @@ def signin():
         username = request.form["username"]
         password = request.form["password"]
         user = get_user_by_name(username)
+        
         if user and check_password_hash(user.password, password):
             session["username"] = username
             return redirect(url_for("search", name=user.name))

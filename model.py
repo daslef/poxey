@@ -49,6 +49,9 @@ def create_app():
 
 def get_user_by_name(name):
     return User.query.filter_by(name=name).first()
+    
+def get_user_by_email(email):
+    return User.query.filter_by(email=email).first()
 
 def get_user_history(user_id):
     return UserRequests.query.filter_by(user_id=user_id)
