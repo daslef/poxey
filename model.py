@@ -9,7 +9,7 @@ class User(db.Model):
     name = db.Column(db.String(20))
     email = db.Column(db.String(100))
     password = db.Column(db.String(100))
-    user_requests = db.relationship('UserRequests', backref='user', lazy=True)
+    user_requests = db.relationship("UserRequests", backref="user", lazy=True)
 
     def __init__(self, name, email, password):
         self.name = name
@@ -22,7 +22,7 @@ class User(db.Model):
 
 class UserRequests(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     pokemon_id = db.Column(db.Integer)
     pokemon_name = db.Column(db.String(60))
     pokemon_type = db.Column(db.String(20))
@@ -40,8 +40,8 @@ class UserRequests(db.Model):
 
 def create_app():
     app = Flask(__name__)
-    app.secret_key = '*PInefdlyv5@'
-    app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///users.sqlite3'
+    app.secret_key = "*PInefdlyv5@"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.sqlite3"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.permanent_session_lifetime = timedelta(hours=1)
     db.init_app(app)
