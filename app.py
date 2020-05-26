@@ -3,56 +3,17 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from poke import get_pokemon_data, send_info
+from model import db, create_app, get_user_by_name, add_user, get_user_history, get_pokemon_by_name, add_user_request
 from random import randint
 
-app = Flask(__name__)
-app.secret_key = '*PInefdlyv5@'
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///users.sqlite3'
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.permanent_session_lifetime = timedelta(hours=1)
-
-db = SQLAlchemy(app)
-
-
-class User(db.Model):
-    _id = db.Column("id", db.Integer, primary_key=True)
-    name = db.Column(db.String(20))
-    email = db.Column(db.String(100))
-    password = db.Column(db.String(100))
-    user_requests = db.relationship('UserRequests', backref='user', lazy=True)
-
-    def __init__(self, name, email, password):
-        self.name = name
-        self.email = email
-        self.password = password
-
-    def __str__(self):
-        return f"Username - {self.name} Email - {self.email}"
-
-
-class UserRequests(db.Model):
-    _id = db.Column("id", db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    pokemon_id = db.Column(db.Integer)
-    pokemon_name = db.Column(db.String(60))
-    pokemon_type = db.Column(db.String(20))
-    pokemon_img = db.Column(db.String(400))
-
-    def __init__(self, user_id, pokemon_id, pokemon_name, pokemon_type, pokemon_img):
-        self.user_id = user_id
-        self.pokemon_id = pokemon_id
-        self.pokemon_name = pokemon_name
-        self.pokemon_type = pokemon_type
-        self.pokemon_img = pokemon_img
-
-    def __str__(self):
-        return f"UserID - {self.user_id} Pokemon - {self.pokemon_name}"
-
+app = create_app()
+app.app_context().push()
 
 @app.route('/')
 def index():
     if session.get('username'):
         return redirect(url_for("search"))
+    
     return render_template("index.html")
 
 
@@ -66,15 +27,13 @@ def signup():
         email = request.form['email']
         password = request.form['password']
         password = generate_password_hash(password)
-        found_user = User.query.filter_by(name=username).first()
+        found_user = get_user_by_name(username)
 
         if found_user:
             flash("Пользователь с таким именем уже зарегистрирован!")
             return redirect(url_for("signup"))
         else:
-            user = User(username, email, password)
-            db.session.add(user)
-            db.session.commit()
+            add_user(username, email, password)
             session['username'] = username
         return redirect(url_for("search"))
 
@@ -89,7 +48,7 @@ def signin():
     if request.method == "POST":
         username = request.form['username']
         password = request.form['password']
-        user = User.query.filter_by(name=username).first()
+        user = get_user_by_name(username)
         if user and check_password_hash(user.password, password):
             session['username'] = username
             return redirect(url_for('search', name=user.name))
@@ -111,8 +70,8 @@ def profile():
     if not session.get('username'):
         return redirect(url_for("index"))
     
-    user = User.query.filter_by(name=session['username']).first()
-    user_history = list(UserRequests.query.filter_by(user_id=user._id))
+    user = get_user_by_name(session['username'])
+    user_history = list(get_user_history(user._id))
     pokemons_count = {}
 
     for req in user_history:
@@ -122,7 +81,8 @@ def profile():
             pokemons_count[req.pokemon_name] += 1
 
     popular_pokemon = sorted(pokemons_count.items(), key=lambda x: x[1], reverse=True)[0][0]
-    popular_img = UserRequests.query.filter_by(pokemon_name=popular_pokemon).first().pokemon_img
+    popular_img = get_pokemon_by_name(popular_pokemon).pokemon_img
+    
     user_data = {
         "id": user._id,
         "username": user.name, 
@@ -152,11 +112,9 @@ def search():
             if pokemon_data != "Error":
                 send_info(pokemon_data, session)
 
-                found_user = User.query.filter_by(name=session['username']).first()
-
-                user_req = UserRequests(found_user._id, pokemon_data["_id"], pokemon_data["name"], pokemon_data["pokemonType"][0], pokemon_data["sprites"])
-                db.session.add(user_req)
-                db.session.commit()
+                found_user = get_user_by_name(session['username'])
+                
+                add_user_request(found_user._id, pokemon_data["_id"], pokemon_data["name"], pokemon_data["pokemonType"][0], pokemon_data["sprites"])
             else:
                 session.pop('pokemon_name', None)
 
@@ -168,8 +126,8 @@ def pokemon():
     if not session.get('username'):
         return redirect(url_for("index"))
 
-    found_user = User.query.filter_by(name=session['username']).first()
-    user_history = UserRequests.query.filter_by(user_id=found_user._id)
+    found_user = get_user_by_name(session['username'])
+    user_history = get_user_history(found_user._id)
 
     if len(list(user_history)) < 9:
         necessary_pokemons = list(user_history)
@@ -177,7 +135,6 @@ def pokemon():
         necessary_pokemons = user_history[len(list(user_history)) - 9:]
 
     return render_template("history.html", pokemons=necessary_pokemons)
-
 
 if __name__ == "__main__":
     db.create_all()

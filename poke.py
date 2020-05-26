@@ -1,7 +1,6 @@
 import requests
 import json
 
-
 def get_pokemon_data(name):
     req = requests.get(f'https://pokeapi.co/api/v2/pokemon/{name}/')
     if req.status_code != 200:
