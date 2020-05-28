@@ -73,7 +73,7 @@ def profile():
         return redirect(url_for("index"))
     
     user = get_user_by_name(session["username"])
-    user_history = list(get_user_history(user._id))
+    user_history = get_user_history(user._id)
     pokemons_count = {}
 
     for req in user_history:
@@ -131,10 +131,10 @@ def history():
     found_user = get_user_by_name(session["username"])
     user_history = get_user_history(found_user._id)
 
-    if len(list(user_history)) < 9:
-        necessary_pokemons = list(user_history)
+    if len(user_history) < 9:
+        necessary_pokemons = user_history
     else:
-        necessary_pokemons = user_history[len(list(user_history)) - 9:]
+        necessary_pokemons = user_history[len(user_history) - 9:]
 
     return render_template("history.html", pokemons=necessary_pokemons)
     
@@ -167,7 +167,6 @@ def test():
     if not found_user.is_admin:
         return redirect(url_for("search"))
     
-    print(get_all_users())
     
     return render_template("adminPanel.html")
     
