@@ -1,6 +1,7 @@
 import requests
 import json
 
+
 def get_pokemon_data(name):
     req = requests.get(f"https://pokeapi.co/api/v2/pokemon/{name}/")
     if req.status_code != 200:
@@ -19,11 +20,3 @@ def get_pokemon_data(name):
 
     return pokemon_data
 
-
-def send_info(data, session):
-    session["pokemon_id"] = data["_id"]
-    session["pokemon_name"] = data["name"]
-    session["pokemon_height"] = data["height"]
-    session["pokemon_weight"] = data["weight"]
-    session["pokemon_types"] = data["pokemonType"]
-    session["pokemon_img"] = data["sprites"]

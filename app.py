@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from poke import get_pokemon_data, send_info
+from poke import get_pokemon_data
+from session_utils import add_pokemon_to_session, remove_pokemon_from_session, remove_user_from_session
 from model import db, create_app, get_user_by_name, add_user, get_user_history, get_pokemon_by_name, add_user_request, get_user_by_email, get_all_users, make_user_admin
 from random import randint
 
@@ -62,8 +63,8 @@ def signin():
 
 @app.route("/logout")
 def logout():
-    session.pop("username", None)
-    session.pop("pokemon_name", None)
+    remove_user_from_session(session)
+    remove_pokemon_from_session(session)
     return redirect(url_for("index"))
 
 
@@ -106,13 +107,13 @@ def search():
         try:
             if request.form["random_button"]:
                 pokemon_data = get_pokemon_data(randint(1, 807))
-                send_info(pokemon_data, session)
+                add_pokemon_to_session(pokemon_data, session)
         except:
             user_input = request.form["user_input"].lower()
             pokemon_data = get_pokemon_data(user_input)
 
             if pokemon_data != "Error":
-                send_info(pokemon_data, session)
+                add_pokemon_to_session(pokemon_data, session)
 
                 found_user = get_user_by_name(session["username"])
                 
