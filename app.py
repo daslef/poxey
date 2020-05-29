@@ -5,9 +5,12 @@ from poke import get_pokemon_data
 from session_utils import add_pokemon_to_session, remove_pokemon_from_session, remove_user_from_session
 from model import db, create_app, get_user_by_name, add_user, get_user_history, get_pokemon_by_name, add_user_request, get_user_by_email, get_all_users, make_user_admin
 from random import randint
+from flask_socketio import SocketIO
 
 app = create_app()
 app.app_context().push()
+
+socketio = SocketIO(app)
 
 @app.route("/")
 def index():
@@ -179,8 +182,13 @@ def test():
     
     
     return render_template("adminPanel.html")
+    
+    
+@socketio.on("userMessage")
+def handle_user_message(json, methods=["GET", "POST"]):
+    print(f"Received message: {json}")
 
 
 if __name__ == "__main__":
     db.create_all()
-    app.run(debug=True)
+    socketio.run(app, debug=True)
