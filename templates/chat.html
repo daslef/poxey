@@ -29,31 +29,7 @@
         <div class="chat-block">
             <div class="chat-content">
                 <div class="chat-content__row">
-                    <div class="row-left">
-                        <p class="row-username">Mowl</p>
-                        <p class="row-usermessage">Всем привет!</p>
-                    </div>
-                    <div class="row-right">
-                        <p>17:00</p>
-                    </div>
-                </div>
-                <div class="chat-content__row">
-                    <div class="row-left">
-                        <p class="row-username">Mowl</p>
-                        <p class="row-usermessage">Всем привет!</p>
-                    </div>
-                    <div class="row-right">
-                        <p>17:00</p>
-                    </div>
-                </div>
-                <div class="chat-content__row">
-                    <div class="row-left">
-                        <p class="row-username">Mowl</p>
-                        <p class="row-usermessage">Всем привет!</p>
-                    </div>
-                    <div class="row-right">
-                        <p>17:00</p>
-                    </div>
+                    
                 </div>
             </div>
             <form method="POST" class="chat-input-form">
@@ -80,6 +56,20 @@
                 
                 $(".user-message").val("").focus();
             })
+        });
+        
+        socket.on("messageResponse", (msg) => {
+           if(typeof msg.username !== "undefined") {
+               $(".chat-content").append(`<div class="chat-content__row">
+                                            <div class="row-left">
+                                                <p class="row-username">${msg.username}</p>
+                                                <p class="row-usermessage">${msg.message}</p>
+                                            </div>
+                                            <div>
+                                                <p>${msg.time}</p> 
+                                            </div>
+                                        </div>`);
+           } 
         });
     </script>
 </body>
