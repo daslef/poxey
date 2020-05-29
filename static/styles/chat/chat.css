@@ -58,7 +58,12 @@
 
 .chat-content {
     padding: 15px;
+    overflow: auto;
 }
+
+.chat-content::-webkit-scrollbar { width: 0; }
+.chat-content { -ms-overflow-style: none; }
+.chat-content { overflow: -moz-scrollbars-none; }
 
 .chat-content__row {
     width: 100%;

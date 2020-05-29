@@ -51,6 +51,9 @@
     <script>
         var socket = io.connect(`http://${document.domain}:${location.port}`);
         
+        chat = document.getElementsByClassName("chat-content")[0];
+        chat.scrollTop = 9999;
+        
         socket.on("connect", () => {
             var form = $("form").on("submit", (e) => {
                 e.preventDefault();
@@ -67,8 +70,8 @@
         });
         
         socket.on("messageResponse", (msg) => {
-           if(typeof msg.username !== "undefined") {
-               $(".chat-content").append(`<div class="chat-content__row">
+            if(typeof msg.username !== "undefined") {
+                $(".chat-content").append(`<div class="chat-content__row">
                                             <div class="row-left">
                                                 <p class="row-username">${msg.username}</p>
                                                 <p class="row-usermessage">${msg.message}</p>
@@ -77,7 +80,9 @@
                                                 <p>${msg.time}</p> 
                                             </div>
                                         </div>`);
-           } 
+            }
+            chat = document.getElementsByClassName("chat-content")[0];
+            chat.scrollTop = 9999;
         });
     </script>
 </body>
