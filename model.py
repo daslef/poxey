@@ -49,13 +49,14 @@ class UserRequests(db.Model):
 
 class ChatHistory(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
-    username = db.Column("username", db.String(20))
-    message = db.Column("message", db.String(200))
-    sent_on = db.Column(db.Date, default=datetime.now())
+    username = db.Column("username", db.String(20), nullable=False)
+    message = db.Column("message", db.String(200), nullable=False)
+    sent_on = db.Column(db.DateTime, nullable=False)
     
-    def __init__(self, username, message):
+    def __init__(self, username, message, sent_on):
         self.username = username
         self.message = message
+        self.sent_on = sent_on
 
 
 def create_app():
@@ -114,8 +115,8 @@ def check_exist_user_by_email(email):
         return False
     
 
-def add_message(username, message):
-    user_msg = ChatHistory(username, message)
+def add_message(username, message, sent_on):
+    user_msg = ChatHistory(username, message, sent_on)
     db.session.add(user_msg)
     db.session.commit()
 

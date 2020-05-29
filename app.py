@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from poke import get_pokemon_data
 from session_utils import add_pokemon_to_session, remove_pokemon_from_session, remove_user_from_session
-from model import db, create_app, get_user_by_name, add_user, get_user_history, get_pokemon_by_name, add_user_request, get_user_by_email, get_all_users, make_user_admin
+from model import *
 from random import randint
 from flask_socketio import SocketIO
 from datetime import datetime
@@ -167,8 +167,10 @@ def admin_panel():
 def chat():
     if not session.get("username"):
         return redirect(url_for("index"))
-        
-    return render_template("chat.html")
+    
+    messages = get_all_messages()
+    
+    return render_template("chat.html", messages=messages)
         
 
 @app.route("/process_data/", methods=["POST"])  
@@ -188,6 +190,9 @@ def test():
 @socketio.on("userMessage")
 def handle_user_message(json, methods=["GET", "POST"]):
     timestamp = f"{datetime.now().hour}:{datetime.now().minute}"
+    
+    add_message(json["username"], json["message"], datetime.now())
+    
     json.update({"time": timestamp})
     socketio.emit("messageResponse", json)
 

@@ -28,9 +28,17 @@
         <h2>Общий чат</h2>
         <div class="chat-block">
             <div class="chat-content">
-                <div class="chat-content__row">
-                    
-                </div>
+                {% for msg in messages %}
+                    <div class="chat-content__row">
+                        <div class="row-left">
+                            <p class="row-username">{{ msg.username }}</p>
+                            <p class="row-usermessage">{{ msg.message }}</p>
+                        </div>
+                        <div class="row-right">
+                            <p>{{ msg.sent_on.hour }}:{{ msg.sent_on.minute }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
             <form method="POST" class="chat-input-form">
                 <input type="text" class="user-message" placeholder="Введите сообщение" required />
