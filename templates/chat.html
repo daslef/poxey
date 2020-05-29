@@ -35,7 +35,7 @@
                             <p class="row-usermessage">{{ msg.message }}</p>
                         </div>
                         <div class="row-right">
-                            <p>{{ msg.sent_on.hour }}:{{ msg.sent_on.minute }}</p>
+                            <p>{{ "{:02}".format(msg.sent_on.hour) }}:{{ "{:02}".format(msg.sent_on.minute) }}</p>
                         </div>
                     </div>
                 {% endfor %}
