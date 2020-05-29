@@ -6,6 +6,7 @@ from session_utils import add_pokemon_to_session, remove_pokemon_from_session, r
 from model import db, create_app, get_user_by_name, add_user, get_user_history, get_pokemon_by_name, add_user_request, get_user_by_email, get_all_users, make_user_admin
 from random import randint
 from flask_socketio import SocketIO
+from datetime import datetime
 
 app = create_app()
 app.app_context().push()
@@ -186,7 +187,9 @@ def test():
     
 @socketio.on("userMessage")
 def handle_user_message(json, methods=["GET", "POST"]):
-    print(f"Received message: {json}")
+    timestamp = f"{datetime.now().hour}:{datetime.now().minute}"
+    json.update({"time": timestamp})
+    socketio.emit("messageResponse", json)
 
 
 if __name__ == "__main__":
