@@ -41,7 +41,16 @@
     margin-top: 30px;
 }
 
-.change-name, .change-password {
+.admin-url a {
+    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    text-decoration: none;
+}
+
+.change-name, .change-password, .admin-url a {
     width: 180px;
     height: 50px;
     background-color: rgb(255, 116, 36);
@@ -54,11 +63,15 @@
     font-size: 18px;
 }
 
-.change-name:hover, .change-password:hover {
+.change-name:hover, .change-password:hover, .admin-url a:hover {
     box-shadow: 0 0 20px rgb(214, 84, 8);
     transform: scale(1.1);
 }
 
 .change-name {
     margin-right: 20px;
+}
+
+.admin-url {
+    margin-top: 30px;
 }

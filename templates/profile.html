@@ -43,7 +43,11 @@
             <button class="change-name">Сменить имя</button>
             <button class="change-password">Сменить пароль</button>
         </div>
+        <div class="admin-url">
+            <a href="admin">Админ-панель</a>
+        </div>
     </div>
+    
     <div class="change-name-popup">
         <img id="crossName" src="{{ url_for('static', filename='assets/cross.png') }}">
         <form class="change-name-form" method="POST">
