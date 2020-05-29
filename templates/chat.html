@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poxey</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/search/search.css') }}">
@@ -47,19 +47,19 @@
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script>
         var socket = io.connect(`http://${document.domain}:${location.port}`);
         
         chat = document.getElementsByClassName("chat-content")[0];
-        chat.scrollTop = 9999;
+        chat.scrollTop = chat.scrollHeight;
         
         socket.on("connect", () => {
             var form = $("form").on("submit", (e) => {
                 e.preventDefault();
                 let user = $("#username").text();
                 let msg = $(".user-message").val();
-                
+
                 socket.emit("userMessage", {
                     username: user,
                     message: msg
@@ -81,8 +81,9 @@
                                             </div>
                                         </div>`);
             }
+            
             chat = document.getElementsByClassName("chat-content")[0];
-            chat.scrollTop = 9999;
+            chat.scrollTop = chat.scrollHeight;
         });
     </script>
 </body>
