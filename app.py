@@ -158,6 +158,15 @@ def admin_panel():
     
     return render_template("adminPanel.html")
 
+
+@app.route("/chat")
+def chat():
+    if not session.get("username"):
+        return redirect(url_for("index"))
+        
+    return render_template("chat.html")
+        
+
 @app.route("/process_data/", methods=["POST"])  
 def test():
     if not session.get("username"):
@@ -170,7 +179,7 @@ def test():
     
     
     return render_template("adminPanel.html")
-    
+
 
 if __name__ == "__main__":
     db.create_all()
