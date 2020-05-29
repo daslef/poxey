@@ -194,7 +194,7 @@ def test():
     
 @socketio.on("userMessage")
 def handle_user_message(json, methods=["GET", "POST"]):
-    timestamp = f"{datetime.now().hour}:{datetime.now().minute}"
+    timestamp = f"{datetime.now().hour:02}:{datetime.now().minute:02}"
     
     add_message(json["username"], json["message"], datetime.now())
     
