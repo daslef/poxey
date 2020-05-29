@@ -170,7 +170,12 @@ def chat():
     
     messages = get_all_messages()
     
-    return render_template("chat.html", messages=messages)
+    if len(messages) < 100:
+        necessary_messages = messages
+    else:
+        necessary_messages = messages[len(messages) - 100:]
+    
+    return render_template("chat.html", messages=necessary_messages)
         
 
 @app.route("/process_data/", methods=["POST"])  
