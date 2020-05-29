@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from datetime import timedelta, date
+from datetime import timedelta, date, datetime
 
 db = SQLAlchemy()
 
@@ -47,6 +47,17 @@ class UserRequests(db.Model):
         return f"UserID - {self.user_id} Pokemon - {self.pokemon_name}"
 
 
+class ChatHistory(db.Model):
+    _id = db.Column("id", db.Integer, primary_key=True)
+    username = db.Column("username", db.String(20))
+    message = db.Column("message", db.String(200))
+    sent_on = db.Column(db.Date, default=datetime.now())
+    
+    def __init__(self, username, message):
+        self.username = username
+        self.message = message
+
+
 def create_app():
     app = Flask(__name__)
     app.secret_key = "*PInefdlyv5@"
@@ -80,6 +91,10 @@ def get_all_banned_users():
 def get_all_users():
     return list(User.query.all())
     
+    
+def get_all_messages():
+    return list(ChatHistory.query.all())
+    
 
 def check_exist_user_by_name(name):
     user = get_user_by_name(name)
@@ -98,6 +113,12 @@ def check_exist_user_by_email(email):
     else:
         return False
     
+
+def add_message(username, message):
+    user_msg = ChatHistory(username, message)
+    db.session.add(user_msg)
+    db.session.commit()
+
 
 def add_user(username, email, password):
     user = User(username, email, password)
