@@ -11,7 +11,7 @@ from datetime import datetime
 app = create_app()
 app.app_context().push()
 
-socketio = SocketIO(app)
+socket = SocketIO(app)
 
 @app.route("/")
 def index():
@@ -192,16 +192,16 @@ def test():
     return render_template("adminPanel.html")
     
     
-@socketio.on("userMessage")
+@socket.on("userMessage")
 def handle_user_message(json, methods=["GET", "POST"]):
     timestamp = f"{datetime.now().hour:02}:{datetime.now().minute:02}"
     
     add_message(json["username"], json["message"], datetime.now())
     
     json.update({"time": timestamp})
-    socketio.emit("messageResponse", json)
+    socket.emit("messageResponse", json)
 
 
 if __name__ == "__main__":
     db.create_all()
-    socketio.run(app, debug=True)
+    socket.run(app, debug=True)
