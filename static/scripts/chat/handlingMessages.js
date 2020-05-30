@@ -1,6 +1,6 @@
-var socket = io.connect(`http://${document.domain}:${location.port}`);
-        
-chat = document.getElementsByClassName("chat-content")[0];
+var socket = io.connect(`http://${document.domain}:${location.port}`);     
+const chat = document.getElementsByClassName("chat-content")[0];
+
 chat.scrollTop = chat.scrollHeight;
 
 socket.on("connect", () => {
@@ -19,18 +19,18 @@ socket.on("connect", () => {
 });
 
 socket.on("messageResponse", (msg) => {
-    if(typeof msg.username !== "undefined") {
+    const { username, message, time } = msg;
+    if(typeof username !== "undefined") {
         $(".chat-content").append(`<div class="chat-content__row">
-                                    <div class="row-left">
-                                        <p class="row-username">${msg.username}</p>
-                                        <p class="row-usermessage">${msg.message}</p>
-                                    </div>
-                                    <div>
-                                        <p>${msg.time}</p> 
-                                    </div>
-                                </div>`);
+                                        <div class="row-left">
+                                            <p class="row-username">${username}</p>
+                                            <p class="row-usermessage">${message}</p>
+                                        </div>
+                                        <div>
+                                            <p>${time}</p>
+                                        </div>
+                                    </div>`);
     }
     
-    chat = document.getElementsByClassName("chat-content")[0];
     chat.scrollTop = chat.scrollHeight;
 });
