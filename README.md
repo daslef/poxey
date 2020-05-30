@@ -16,5 +16,6 @@ Poxey is a web-app, where you feel all capabilities of pokemon's world!
   - HTML, CSS, JS
   - SQLite DB
   - Poke API
+  - SocketIO
 
-**Sign up and start your adventure!**
+**Let's start your adventure!**
