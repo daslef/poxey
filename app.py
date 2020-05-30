@@ -6,7 +6,7 @@ from session_utils import add_pokemon_to_session, remove_pokemon_from_session, r
 from model import *
 from random import randint
 from flask_socketio import SocketIO
-from datetime import datetime
+from datetime import datetime, date
 
 app = create_app()
 app.app_context().push()
@@ -91,6 +91,11 @@ def profile():
     user_history = get_user_history(user._id)
     pokemons_count = {}
 
+    registrered_time = user.registered_on
+    current_time = datetime.date(datetime.today())
+    days = (current_time-registrered_time).days
+
+    
     for req in user_history:
         if req.pokemon_name not in pokemons_count.keys():
             pokemons_count.update({req.pokemon_name: 1})
@@ -110,7 +115,8 @@ def profile():
         "email": user.email,
         "count": len(user_history),
         "pokemon": popular_pokemon,
-        "img": popular_img
+        "img": popular_img,
+        "days": days
     }
     if get_user_by_name(session["username"]).is_admin:
         return render_template("profile.html", user_data=user_data, admin=True)
