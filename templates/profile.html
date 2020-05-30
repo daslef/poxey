@@ -36,8 +36,12 @@
                 <p>Дней на сайте: 238</p>
             </div>
             <div class="profile-content__favor">
+                {% if user_data['pokemon'] %}
                 <img src="{{user_data['img']}}" alt="">
                 <p>Ваш любимый покемон: {{user_data['pokemon'].title()}}</p>
+                {% else %}
+                <p>У вас нет любимого покемона!</p>
+                {% endif %}
             </div>
         </div>
         <div class="profile-buttons">
