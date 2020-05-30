@@ -13,11 +13,12 @@ app.app_context().push()
 
 socket = SocketIO(app)
 
+
 @app.route("/")
 def index():
     if session.get("username"):
         return redirect(url_for("search"))
-    
+
     return render_template("index.html")
 
 
@@ -55,7 +56,7 @@ def signin():
         username = request.form["username"]
         password = request.form["password"]
         user = get_user_by_name(username)
-        
+
         if user and check_password_hash(user.password, password):
             session["username"] = username
             return redirect(url_for("search", name=user.name))
@@ -76,7 +77,7 @@ def logout():
 def profile():
     if not session.get("username"):
         return redirect(url_for("index"))
-    
+
     user = get_user_by_name(session["username"])
     user_history = get_user_history(user._id)
     pokemons_count = {}
@@ -89,17 +90,19 @@ def profile():
 
     popular_pokemon = sorted(pokemons_count.items(), key=lambda x: x[1], reverse=True)[0][0]
     popular_img = get_pokemon_by_name(popular_pokemon).pokemon_img
-    
+
     user_data = {
         "id": user._id,
-        "username": user.name, 
-        "email": user.email, 
+        "username": user.name,
+        "email": user.email,
         "count": len(user_history),
-        "pokemon": popular_pokemon, 
+        "pokemon": popular_pokemon,
         "img": popular_img
     }
-
-    return render_template("profile.html", user_data=user_data)
+    if get_user_by_name(session["username"]).is_admin:
+        return render_template("profile.html", user_data=user_data, admin=True)
+    else:
+        return render_template("profile.html", user_data=user_data)
 
 
 @app.route("/search", methods=["GET", "POST"])
@@ -120,8 +123,9 @@ def search():
                 add_pokemon_to_session(pokemon_data, session)
 
                 found_user = get_user_by_name(session["username"])
-                
-                add_user_request(found_user._id, pokemon_data["_id"], pokemon_data["name"], pokemon_data["pokemonType"][0], pokemon_data["sprites"])
+
+                add_user_request(found_user._id, pokemon_data["_id"], pokemon_data["name"],
+                                 pokemon_data["pokemonType"][0], pokemon_data["sprites"])
             else:
                 session.pop("pokemon_name", None)
 
@@ -142,24 +146,26 @@ def history():
         necessary_pokemons = user_history[len(user_history) - 9:]
 
     return render_template("history.html", pokemons=necessary_pokemons)
-    
+
+
 @app.route("/rating")
 def rating():
     if not session.get("username"):
         return redirect(url_for("index"))
-        
+
     return render_template("rating.html")
+
 
 @app.route("/admin")
 def admin_panel():
     if not session.get("username"):
         return redirect(url_for("index"))
-        
+
     found_user = get_user_by_name(session["username"])
-    
+
     if not found_user.is_admin:
         return redirect(url_for("search"))
-    
+
     return render_template("adminPanel.html")
 
 
@@ -167,37 +173,36 @@ def admin_panel():
 def chat():
     if not session.get("username"):
         return redirect(url_for("index"))
-    
+
     messages = get_all_messages()
-    
+
     if len(messages) < 100:
         necessary_messages = messages
     else:
         necessary_messages = messages[len(messages) - 100:]
-    
-    return render_template("chat.html", messages=necessary_messages)
-        
 
-@app.route("/process_data/", methods=["POST"])  
+    return render_template("chat.html", messages=necessary_messages)
+
+
+@app.route("/process_data/", methods=["POST"])
 def test():
     if not session.get("username"):
         return redirect(url_for("index"))
-        
+
     found_user = get_user_by_name(session["username"])
-    
+
     if not found_user.is_admin:
         return redirect(url_for("search"))
-    
-    
+
     return render_template("adminPanel.html")
-    
-    
+
+
 @socket.on("userMessage")
 def handle_user_message(json, methods=["GET", "POST"]):
     timestamp = f"{datetime.now().hour:02}:{datetime.now().minute:02}"
-    
+
     add_message(json["username"], json["message"], datetime.now())
-    
+
     json.update({"time": timestamp})
     socket.emit("messageResponse", json)
 
