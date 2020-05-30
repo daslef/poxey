@@ -84,7 +84,13 @@ def get_user_history(user_id):
 def get_pokemon_by_name(pokemon_name):
     return UserRequests.query.filter_by(pokemon_name=pokemon_name).first()
     
+
+def change_user_name(old_name, new_name):
+    user = get_user_by_name(old_name)
+    user.name = new_name
+    db.session.commit()
     
+
 def get_all_banned_users():
     return list(User.query.filter_by(is_banned=True))
 

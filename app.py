@@ -78,6 +78,15 @@ def profile():
     if not session.get("username"):
         return redirect(url_for("index"))
 
+    if request.method == "POST":
+        new_user_name = request.form["new_name"]
+        if not get_user_by_name(new_user_name):    
+            change_user_name(session["username"], new_user_name)
+            remove_user_from_session(session)
+            return redirect(url_for("signin"))
+        else:
+            flash("Данный логин уже занят!")
+        
     user = get_user_by_name(session["username"])
     user_history = get_user_history(user._id)
     pokemons_count = {}
