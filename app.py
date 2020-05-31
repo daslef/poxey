@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from poke import get_pokemon_data
 from session_utils import add_pokemon_to_session, remove_pokemon_from_session, remove_user_from_session
 from model import *
+from utils import get_top_pokemons_by_request
 from random import randint
 from flask_socketio import SocketIO
 from datetime import datetime, date
@@ -173,16 +174,7 @@ def rating():
         return redirect(url_for("index"))
     
     users_requests = get_all_users_request()
-    
-    popular_pokemons = {}
-    
-    for req in users_requests:
-        if req.pokemon_name in popular_pokemons.keys():
-            popular_pokemons[req.pokemon_name] += 1
-        else:
-            popular_pokemons.update({req.pokemon_name: 1})
-            
-    popular_pokemons = sorted(popular_pokemons.items(), key=lambda x: x[1], reverse=True)[:5]
+    popular_pokemons = get_top_pokemons_by_request(users_requests, 5)
     
     return render_template("rating.html", popular_pokemons=popular_pokemons)
 
