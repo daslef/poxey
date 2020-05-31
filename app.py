@@ -171,8 +171,20 @@ def history():
 def rating():
     if not session.get("username"):
         return redirect(url_for("index"))
-
-    return render_template("rating.html")
+    
+    users_requests = get_all_users_request()
+    
+    popular_pokemons = {}
+    
+    for req in users_requests:
+        if req.pokemon_name in popular_pokemons.keys():
+            popular_pokemons[req.pokemon_name] += 1
+        else:
+            popular_pokemons.update({req.pokemon_name: 1})
+            
+    popular_pokemons = sorted(popular_pokemons.items(), key=lambda x: x[1], reverse=True)[:5]
+    
+    return render_template("rating.html", popular_pokemons=popular_pokemons)
 
 
 @app.route("/admin")

@@ -79,6 +79,10 @@ def get_user_by_email(email):
 
 def get_user_history(user_id):
     return list(UserRequests.query.filter_by(user_id=user_id))
+    
+    
+def get_all_users_request():
+    return list(UserRequests.query.all())
 
 
 def get_pokemon_by_name(pokemon_name):

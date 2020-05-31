@@ -35,31 +35,13 @@
                         <p class="name">Имя покемона</p>
                         <p class="count">Количество запросов</p>
                     </div>
-                    <div class="pokemon-row">
-                        <p class="place">#1</p>
-                        <p class="name">Rapidash</p>
-                        <p class="count">32</p>
-                    </div>
-                    <div class="pokemon-row">
-                        <p class="place">#1</p>
-                        <p class="name">Rapidash</p>
-                        <p class="count">32</p>
-                    </div>
-                    <div class="pokemon-row">
-                        <p class="place">#1</p>
-                        <p class="name">Rapidash</p>
-                        <p class="count">32</p>
-                    </div>
-                    <div class="pokemon-row">
-                        <p class="place">#1</p>
-                        <p class="name">Rapidash</p>
-                        <p class="count">32</p>
-                    </div>
-                    <div class="pokemon-row">
-                        <p class="place">#1</p>
-                        <p class="name">Rapidash</p>
-                        <p class="count">32</p>
-                    </div>
+                    {% for i in range(popular_pokemons|length) %}
+                        <div class="pokemon-row">
+                            <p class="place">#{{ i+1 }}</p>
+                            <p class="name">{{ popular_pokemons[i][0].title() }}</p>
+                            <p class="count">{{ popular_pokemons[i][1] }}</p>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
             <div class="pokemons-rating">
