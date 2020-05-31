@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from poke import get_pokemon_data
 from session_utils import add_pokemon_to_session, remove_pokemon_from_session, remove_user_from_session
 from model import *
-from utils import get_top_pokemons_by_request
+from utils import get_top_pokemons_by_request, get_last_values
 from random import randint
 from flask_socketio import SocketIO
 from datetime import datetime, date
@@ -159,11 +159,7 @@ def history():
 
     found_user = get_user_by_name(session["username"])
     user_history = get_user_history(found_user._id)
-
-    if len(user_history) < 9:
-        necessary_pokemons = user_history
-    else:
-        necessary_pokemons = user_history[len(user_history) - 9:]
+    necessary_pokemons = get_last_values(user_history, 9)[::-1]
 
     return render_template("history.html", pokemons=necessary_pokemons)
 
@@ -198,11 +194,7 @@ def chat():
         return redirect(url_for("index"))
 
     messages = get_all_messages()
-
-    if len(messages) < 100:
-        necessary_messages = messages
-    else:
-        necessary_messages = messages[len(messages) - 100:]
+    necessary_messages = get_last_values(messages, 100)
 
     return render_template("chat.html", messages=necessary_messages)
 
