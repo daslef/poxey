@@ -1,17 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from poke import get_pokemon_data
-from session_utils import add_pokemon_to_session, remove_pokemon_from_session, remove_user_from_session
-from model import *
-from utils import get_top_pokemons_by_request, get_last_values
 from random import randint
 from flask_socketio import SocketIO
 from datetime import datetime, date
+from model import *
+import poke
+import session_utils
+import utils
 
 app = create_app()
 app.app_context().push()
-
 socket = SocketIO(app)
 
 
@@ -69,8 +68,8 @@ def signin():
 
 @app.route("/logout")
 def logout():
-    remove_user_from_session(session)
-    remove_pokemon_from_session(session)
+    session_utils.remove_user_from_session(session)
+    session_utils.remove_pokemon_from_session(session)
     return redirect(url_for("index"))
 
 
@@ -83,7 +82,7 @@ def profile():
         new_user_name = request.form["new_name"]
         if not get_user_by_name(new_user_name):    
             change_user_name(session["username"], new_user_name)
-            remove_user_from_session(session)
+            session_utils.remove_user_from_session(session)
             return redirect(url_for("signin"))
         else:
             flash("Данный логин уже занят!")
@@ -133,14 +132,14 @@ def search():
     if request.method == "POST":
         try:
             if request.form["random_button"]:
-                pokemon_data = get_pokemon_data(randint(1, 807))
-                add_pokemon_to_session(pokemon_data, session)
+                pokemon_data = poke.get_pokemon_data(randint(1, 807))
+                session_utils.add_pokemon_to_session(pokemon_data, session)
         except:
             user_input = request.form["user_input"].lower()
-            pokemon_data = get_pokemon_data(user_input)
+            pokemon_data = poke.get_pokemon_data(user_input)
 
             if pokemon_data != "Error":
-                add_pokemon_to_session(pokemon_data, session)
+                session_utils.add_pokemon_to_session(pokemon_data, session)
 
                 found_user = get_user_by_name(session["username"])
 
@@ -159,7 +158,7 @@ def history():
 
     found_user = get_user_by_name(session["username"])
     user_history = get_user_history(found_user._id)
-    necessary_pokemons = get_last_values(user_history, 9)[::-1]
+    necessary_pokemons = utils.get_last_values(user_history, 9)[::-1]
 
     return render_template("history.html", pokemons=necessary_pokemons)
 
@@ -170,7 +169,7 @@ def rating():
         return redirect(url_for("index"))
     
     users_requests = get_all_users_request()
-    popular_pokemons = get_top_pokemons_by_request(users_requests, 5)
+    popular_pokemons = utils.get_top_pokemons_by_request(users_requests, 5)
     
     return render_template("rating.html", popular_pokemons=popular_pokemons)
 
@@ -194,7 +193,7 @@ def chat():
         return redirect(url_for("index"))
 
     messages = get_all_messages()
-    necessary_messages = get_last_values(messages, 100)
+    necessary_messages = utils.get_last_values(messages, 100)
 
     return render_template("chat.html", messages=necessary_messages)
 
