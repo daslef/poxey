@@ -12,6 +12,56 @@ body {
     background: linear-gradient(90deg, rgba(255,192,0,1) 0%, rgba(255,173,57,1) 49%, rgba(255,142,18,1) 100%);
 }
 
+.dropbtn {
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    margin-left: 60px;
+    margin-right: 45px;
+    font-size: 20px;
+    transition: all .2s ease;
+    letter-spacing: 2px;
+    width: 40px;
+}
+
+.dropbtn-active {
+    color: rgb(255, 81, 0) !important;
+    font-weight: 700;
+    text-shadow: black 1px 1px 0, black -1px -1px 0, 
+    black -1px 1px 0, black 1px -1px 0;
+}
+
+.dropbtn:hover {
+    color: rgb(255, 81, 0) !important;
+    font-weight: 700;
+    text-shadow: black 1px 1px 0, black -1px -1px 0, 
+    black -1px 1px 0, black 1px -1px 0;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    background-color: rgb(255, 185, 106);
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: .2s;
+}
+
+.dropdown-content a:hover {
+    background-color: rgb(255, 165, 62);
+}
+
+.show {display:block;}
+
 .important-text {
     color: rgb(255, 81, 0) !important;
     font-weight: 700;

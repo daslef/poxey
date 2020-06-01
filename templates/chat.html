@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/search/search.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/chat/chat.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script src="{{ url_for('static', filename='scripts/global/dropDown.js') }}"></script>
 </head>
 <body>
     <header class="header">
@@ -17,10 +18,15 @@
             <ul class="header-nav-list">
                 <li><a href="search">Поиск</a></li>
                 <li><a class="active" href="chat">Чат</a></li>
-                <li><a href="history">История</a></li>
                 <li><a href="rating">Рейтинг</a></li>
-                <li><a href="profile" id="username">{{ session['username'] }}</a></li>
-                <li><a class="logout" href="logout">Выйти</a></li>
+                <li>
+                    <button onclick="showDropdown()" class="dropbtn">{{ session['username'] }}</button>
+                    <div id="myDropdown" class="dropdown-content">
+                        <a href="profile">Профиль</a>
+                        <a href="history">История</a>
+                        <a class="logout" href="logout">Выйти</a>
+                    </div>
+                </li>
             </ul>
         </div>
     </header>
