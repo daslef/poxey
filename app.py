@@ -145,6 +145,7 @@ def search():
 
                 add_user_request(found_user._id, pokemon_data["_id"], pokemon_data["name"],
                                  pokemon_data["pokemonType"][0], pokemon_data["sprites"])
+                add_money(found_user, randint(1, 10))
             else:
                 session.pop("pokemon_name", None)
 
