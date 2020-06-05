@@ -42,6 +42,8 @@ def signup():
         else:
             add_user(username, email, password)
             session["username"] = username
+            user = get_user_by_name(username)
+            session_utils.update_money_in_session(session, user.money)
         return redirect(url_for("search"))
 
     return render_template("signup.html")
@@ -59,6 +61,7 @@ def signin():
 
         if user and check_password_hash(user.password, password):
             session["username"] = username
+            session_utils.update_money_in_session(session, user.money)
             return redirect(url_for("search", name=user.name))
         else:
             flash("Неправильный логин или пароль!")
@@ -146,6 +149,9 @@ def search():
                 add_user_request(found_user._id, pokemon_data["_id"], pokemon_data["name"],
                                  pokemon_data["pokemonType"][0], pokemon_data["sprites"])
                 add_money(found_user, randint(1, 10))
+                
+                session_utils.update_money_in_session(session, found_user.money)
+                
             else:
                 session.pop("pokemon_name", None)
 

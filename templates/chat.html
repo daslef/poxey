@@ -19,6 +19,7 @@
                 <li><a href="search">Поиск</a></li>
                 <li><a class="active" href="chat">Чат</a></li>
                 <li><a href="rating">Рейтинг</a></li>
+                <li>{{ session["money"] }} <img src="{{ url_for('static', filename='assets/coin.png') }}" alt=""></li>
                 <li>
                     <button onclick="showDropdown()" class="dropbtn" id="username">{{ session['username'] }}</button>
                     <div id="myDropdown" class="dropdown-content">
