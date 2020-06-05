@@ -10,10 +10,11 @@ class User(db.Model):
     name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    user_requests = db.relationship("UserRequests", backref="user", lazy=True)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
     is_banned = db.Column(db.Boolean, default=False, nullable=False)
     registered_on = db.Column(db.Date, default=date.today())
+    money = db.Column(db.Integer, default=500, nullable=False)
+    user_requests = db.relationship("UserRequests", backref="user", lazy=True)
 
 
     def __init__(self, name, email, password):
@@ -160,4 +161,14 @@ def ban_user(user):
     
 def unban_user(user):
     user.is_banned = False
+    db.session.commit()
+
+
+def add_money(user, money):
+    user.money += money
+    db.session.commit()
+
+
+def change_money(user, money):
+    user.money = money
     db.session.commit()
