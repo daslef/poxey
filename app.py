@@ -177,8 +177,10 @@ def rating():
     
     users_requests = get_all_users_request()
     popular_pokemons = utils.get_top_pokemons_by_request(users_requests, 5)
+    popular_users = utils.get_top_users_by_request(users_requests, 5)
+    print(popular_users)
     
-    return render_template("rating.html", popular_pokemons=popular_pokemons)
+    return render_template("rating.html", popular_pokemons=popular_pokemons, popular_users=popular_users)
 
 
 @app.route("/admin")

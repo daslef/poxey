@@ -74,6 +74,10 @@ def get_user_by_name(name):
     return User.query.filter_by(name=name).first()
 
 
+def get_username_by_id(id):
+    return User.query.filter_by(_id=id).first().name
+
+
 def get_user_by_email(email):
     return User.query.filter_by(email=email).first()
 
