@@ -20,7 +20,7 @@
                 <li><a class="active" href="chat">Чат</a></li>
                 <li><a href="rating">Рейтинг</a></li>
                 <li>
-                    <button onclick="showDropdown()" class="dropbtn">{{ session['username'] }}</button>
+                    <button onclick="showDropdown()" class="dropbtn" id="username">{{ session['username'] }}</button>
                     <div id="myDropdown" class="dropdown-content">
                         <a href="profile">Профиль</a>
                         <a href="history">История</a>
