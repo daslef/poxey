@@ -82,29 +82,42 @@ def profile():
         return redirect(url_for("index"))
 
     if request.method == "POST":
-        new_user_name = request.form["new_name"]
-        if not get_user_by_name(new_user_name):    
-            change_user_name(session["username"], new_user_name)
-            session_utils.remove_user_from_session(session)
-            return redirect(url_for("signin"))
-        else:
-            flash("Данный логин уже занят!")
-        
+        try:
+            new_user_name = request.form["new_name"]
+            if not get_user_by_name(new_user_name):
+                change_user_name(session["username"], new_user_name)
+                session_utils.remove_user_from_session(session)
+                return redirect(url_for("signin"))
+            else:
+                flash("Данный логин уже занят!")
+        except:
+            user_password = get_user_by_name(session["username"]).password
+            new_password = request.form["new_password"]
+            current_old_password = check_password_hash(user_password, request.form["old_password"])
+            current_new_password = check_password_hash(user_password, new_password)
+            if current_old_password and not current_new_password:
+                change_password(session["username"], generate_password_hash(new_password))
+                session_utils.remove_user_from_session(session)
+                return redirect(url_for("signin"))
+            elif not current_old_password:
+                flash("Неверный старый пароль")
+            elif current_new_password:
+                flash("Новый пароль схож на старый")
+
     user = get_user_by_name(session["username"])
     user_history = get_user_history(user._id)
     pokemons_count = {}
 
     registrered_time = user.registered_on
     current_time = datetime.date(datetime.today())
-    days = (current_time-registrered_time).days
+    days = (current_time - registrered_time).days
 
-    
     for req in user_history:
         if req.pokemon_name not in pokemons_count.keys():
             pokemons_count.update({req.pokemon_name: 1})
         else:
             pokemons_count[req.pokemon_name] += 1
-    
+
     popular_pokemon = None
     popular_img = None
 
@@ -121,6 +134,7 @@ def profile():
         "img": popular_img,
         "days": days
     }
+
     if get_user_by_name(session["username"]).is_admin:
         return render_template("profile.html", user_data=user_data, admin=True)
     else:
@@ -149,9 +163,9 @@ def search():
                 add_user_request(found_user._id, pokemon_data["_id"], pokemon_data["name"],
                                  pokemon_data["pokemonType"][0], pokemon_data["sprites"])
                 add_money(found_user, randint(1, 10))
-                
+
                 session_utils.update_money_in_session(session, found_user.money)
-                
+
             else:
                 session.pop("pokemon_name", None)
 
@@ -174,12 +188,12 @@ def history():
 def rating():
     if not session.get("username"):
         return redirect(url_for("index"))
-    
+
     users_requests = get_all_users_request()
     popular_pokemons = utils.get_top_pokemons_by_request(users_requests, 5)
     popular_users = utils.get_top_users_by_request(users_requests, 5)
     print(popular_users)
-    
+
     return render_template("rating.html", popular_pokemons=popular_pokemons, popular_users=popular_users)
 
 

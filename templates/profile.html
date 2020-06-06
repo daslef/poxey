@@ -82,8 +82,8 @@
     <div class="change-password-popup">
         <img id="crossPassword" src="{{ url_for('static', filename='assets/cross.png') }}">
         <form class="change-password-form" method="POST">
-            <input type="text" required minlength="4" placeholder="Введите старый пароль">
-            <input type="text" required minlength="4" placeholder="Введите новый пароль">
+            <input type="password" name="old_password" required minlength="6" placeholder="Введите старый пароль">
+            <input type="password" name="new_password" required minlength="6" placeholder="Введите новый пароль">
             <button>Изменить</button>
         </form>
     </div>
