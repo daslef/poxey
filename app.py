@@ -141,6 +141,29 @@ def profile():
         return render_template("profile.html", user_data=user_data)
 
 
+@app.route("/user/<username>")
+def public_profile(username):
+    if not session.get("username"):
+        return redirect(url_for("index"))
+
+    found_user = get_user_by_name(username)
+
+    if not found_user:
+        return render_template("publicProfile.html", user_data=found_user)
+
+    days = utils.get_date_delta(found_user.registered_on)
+    req_counts = len(get_user_history(found_user._id))
+
+    user_data = {
+        "username": found_user.name,
+        "money": found_user.money,
+        "req_counts": req_counts,
+        "days": days
+    }
+
+    return render_template("publicProfile.html", user_data=user_data)
+
+
 @app.route("/search", methods=["GET", "POST"])
 def search():
     if not session.get("username"):

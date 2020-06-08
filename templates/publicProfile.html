@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poxey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/search/search.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/publicProfile/publicProfile.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="header-logo">
+            <h1>Poxey</h1>
+        </div>
+        <div class="header-nav">
+            <ul class="header-nav-list">
+                <li><a href="search">Поиск</a></li>
+                <li><a href="chat">Чат</a></li>
+                <li><a href="rating">Рейтинг</a></li>
+                <li class="coins">{{ session["money"] }} <img id="coin-img" src="{{ url_for('static', filename='assets/coin.png') }}"></li>
+                <li>
+                    <button onclick="showDropdown()" class="dropbtn">{{ session['username'] }}</button>
+                    <div id="myDropdown" class="dropdown-content">
+                        <a href="profile">Профиль</a>
+                        <a href="history">История</a>
+                        <a class="logout" href="logout">Выйти</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <div class="public-profile">
+        {% if user_data %}
+            <div class="public-profile__content">
+                <h1>Профиль пользователя {{ user_data.username }}</h1>
+                <p>Денег: {{ user_data.money }}</p>
+                <p>Количество запросов: {{ user_data.req_counts }}</p>
+                <p>Дней на сайте: {{ user_data.days }}</p>
+            </div>
+        {% else %}
+            <h1>Пользователь не найден!</h1>
+        {% endif %}
+    </div>
+</body>
+</html>
