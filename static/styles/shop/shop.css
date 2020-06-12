@@ -1,0 +1,44 @@
+.shop {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    margin-top: 20px;
+    flex-direction: column;
+}
+
+.shop-content {
+    margin-top: 40px;
+    display: grid;
+    grid-template-rows: 160px 160px;
+    grid-template-columns: 300px 300px 300px;
+    grid-gap: 2vw;
+}
+
+.shop-content--case {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    border: 1px solid #000;
+    border-radius: 15px;
+}
+
+.shop-content--case img {
+    width: 80px;
+    height: 80px;
+}
+
+.shop-content--case button {
+    border: 0;
+    background-color: rgb(255, 112, 16);
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    outline: 0;
+    transition: .5s;
+}
+
+.shop-content--case button:hover {
+    box-shadow: 0 0 10px rgb(255, 102, 0);
+    background-color: rgb(255, 102, 0);
+}

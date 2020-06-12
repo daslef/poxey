@@ -5,6 +5,15 @@ def add_pokemon_to_session(data, session):
     session["pokemon_weight"] = data["weight"]
     session["pokemon_types"] = data["pokemonType"]
     session["pokemon_img"] = data["sprites"]
+    
+
+def add_droped_pokemon(data, session):
+    session.update({'dp_id': data["_id"]})
+    session["dp_name"] = data["name"]
+    session["dp_height"] = data["height"]
+    session["dp_weight"] = data["weight"]
+    session["dp_types"] = data["pokemonType"]
+    session["dp_img"] = data["sprites"]
 
 
 def update_money_in_session(session, money):

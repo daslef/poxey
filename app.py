@@ -18,7 +18,7 @@ socket = SocketIO(app)
 def index():
     if session.get("username"):
         return redirect(url_for("search"))
-
+    
     return render_template("index.html")
 
 
@@ -195,6 +195,14 @@ def rating():
     print(popular_users)
 
     return render_template("rating.html", popular_pokemons=popular_pokemons, popular_users=popular_users)
+    
+    
+@app.route("/shop", methods=["GET", "POST"])
+def shop():
+    if not session.get("username"):
+        return redirect(url_for("index"))    
+    
+    return render_template("shop.html")   
 
 
 @app.route("/admin")
@@ -221,17 +229,35 @@ def chat():
     return render_template("chat.html", messages=necessary_messages)
 
 
-@app.route("/process_data/", methods=["POST"])
-def test():
+@app.route("/opening_case/", methods=["POST"])
+def test(caseOpened):
     if not session.get("username"):
         return redirect(url_for("index"))
 
-    found_user = get_user_by_name(session["username"])
-
-    if not found_user.is_admin:
-        return redirect(url_for("search"))
-
-    return render_template("adminPanel.html")
+    pokemon_data = {}
+    
+    if data["openCase"] == 1:
+        random_id = randint(1, 148)
+        pokemon_data = poke.get_pokemon_data(random_id)
+    elif data["openCase"] == 2:
+        random_id = randint(149, 297)
+        pokemon_data = poke.get_pokemon_data(random_id)
+    elif data["openCase"] == 3:
+        random_id = randint(298, 446)
+        pokemon_data = poke.get_pokemon_data(random_id)    
+    elif data["openCase"] == 4:
+        random_id = randint(447, 595)
+        pokemon_data = poke.get_pokemon_data(random_id)
+    elif data["openCase"] == 5:
+        random_id = randint(596, 744)
+        pokemon_data = poke.get_pokemon_data(random_id)
+    elif data["openCase"] == 6:
+        random_id = randint(745, 890)
+        pokemon_data = poke.get_pokemon_data(random_id)
+    
+    print(pokemon_data)
+    
+    return render_template("shop.html")
 
 
 @socket.on("userMessage")
