@@ -1,0 +1,16 @@
+.public-profile {
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.public-profile__content {
+    margin-top: 20px;
+    height: 100%;
+}
+
+.public-profile__content p {
+    font-size: 20px;
+    margin-top: 10px;
+}

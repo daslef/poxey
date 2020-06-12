@@ -1,3 +1,4 @@
+from datetime import datetime, date
 import model
 
 def get_top_pokemons_by_request(requests, result_length):
@@ -42,3 +43,10 @@ def get_last_values(startList, result_length):
         result = startList[len(startList) - result_length:]
         
     return result
+
+
+def get_date_delta(date):
+    current_time = datetime.date(datetime.today())
+    days = (current_time - date).days
+
+    return days
