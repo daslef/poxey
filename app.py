@@ -270,37 +270,6 @@ def chat():
     return render_template("chat.html", messages=necessary_messages)
 
 
-@app.route("/opening_case/", methods=["POST"])
-def test(caseOpened):
-    if not session.get("username"):
-        return redirect(url_for("index"))
-
-    pokemon_data = {}
-    
-    if data["openCase"] == 1:
-        random_id = randint(1, 148)
-        pokemon_data = poke.get_pokemon_data(random_id)
-    elif data["openCase"] == 2:
-        random_id = randint(149, 297)
-        pokemon_data = poke.get_pokemon_data(random_id)
-    elif data["openCase"] == 3:
-        random_id = randint(298, 446)
-        pokemon_data = poke.get_pokemon_data(random_id)    
-    elif data["openCase"] == 4:
-        random_id = randint(447, 595)
-        pokemon_data = poke.get_pokemon_data(random_id)
-    elif data["openCase"] == 5:
-        random_id = randint(596, 744)
-        pokemon_data = poke.get_pokemon_data(random_id)
-    elif data["openCase"] == 6:
-        random_id = randint(745, 890)
-        pokemon_data = poke.get_pokemon_data(random_id)
-    
-    print(pokemon_data)
-    
-    return render_template("shop.html")
-
-
 @socket.on("userMessage")
 def handle_user_message(json, methods=["GET", "POST"]):
     timestamp = f"{datetime.now().hour:02}:{datetime.now().minute:02}"
