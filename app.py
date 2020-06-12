@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from random import randint
 from flask_socketio import SocketIO
+from flask_cors import CORS
 from datetime import datetime, date
 from model import *
 import poke
@@ -12,6 +13,7 @@ import utils
 app = create_app()
 app.app_context().push()
 socket = SocketIO(app)
+CORS(app)
 
 
 @app.route("/")
@@ -224,7 +226,23 @@ def rating():
 def shop():
     if not session.get("username"):
         return redirect(url_for("index"))    
-    
+    if request.method == 'POST':
+        data = request.get_json()
+        action = data['openCase']
+        
+        actions_map = {
+            1: randint(1, 148),
+            2: randint(149, 297),
+            3: randint(298, 446),
+            4: randint(447, 595),
+            5: randint(596, 744),
+            6: randint(745, 890)
+        }
+
+        random_id = actions_map.get(action, None)
+        pokemon_data = poke.get_pokemon_data(random_id)
+        return jsonify(pokemon_data)
+
     return render_template("shop.html")   
 
 
